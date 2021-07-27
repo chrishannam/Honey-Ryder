@@ -1,0 +1,6 @@
+click~=8.0.1
+fastavro
+influxdb-client
+kafka-python
+pyserial
+Telemetry-F1-2021

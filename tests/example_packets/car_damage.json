@@ -1,0 +1,786 @@
+{
+  "header": {
+    "packet_format": 2021,
+    "game_major_version": 1,
+    "game_minor_version": 4,
+    "packet_version": 1,
+    "packet_id": 10,
+    "session_uid": 4026825252190519547,
+    "session_time": 0.03,
+    "frame_identifier": 0,
+    "player_car_index": 19,
+    "secondary_player_car_index": 255
+  },
+  "car_damage_data": [
+    {
+      "tyres_wear": [
+        1.8458735212334432e-05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.5964590311050415,
+        1.4340541362762451,
+        1.7072124481201172,
+        1.5210630893707275
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.7061597108840942,
+        1.5295319557189941,
+        1.8524689674377441,
+        1.627209186553955
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.751785397529602,
+        1.5863597393035889,
+        1.8897831439971924,
+        1.6988859176635742
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.296958089369582e-05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.8326137065887451,
+        1.6537392139434814,
+        1.9888142347335815,
+        1.7891595363616943
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.581016182899475,
+        1.4178622961044312,
+        1.6622850894927979,
+        1.4789453744888306
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.8076647520065308,
+        1.6283016204833984,
+        1.9469738006591797,
+        1.757178783416748
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.7467257976531982,
+        1.5767312049865723,
+        1.908041000366211,
+        1.6983022689819336
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.2614300430868752e-05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.616502046585083,
+        1.4523879289627075,
+        1.7248764038085938,
+        1.5330193042755127
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.619422435760498,
+        1.45416259765625,
+        1.727731466293335,
+        1.5455297231674194
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.5014224118203856e-05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.5664159946027212e-05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.4800882127019577e-05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        1.7980053424835205,
+        1.6304271221160889,
+        1.9353952407836914,
+        1.7400662899017334
+      ],
+      "tyres_damage": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        0.0,
+        0.0,
+        1.2982154657947831e-05,
+        2.6471736418898217e-05
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    },
+    {
+      "tyres_wear": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tyres_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "brakes_damage": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "front_left_wing_damage": 0,
+      "front_right_wing_damage": 0,
+      "rear_wing_damage": 0,
+      "floor_damage": 0,
+      "diffuser_damage": 0,
+      "sidepod_damage": 0,
+      "drs_fault": 0,
+      "gear_box_damage": 0,
+      "engine_damage": 0,
+      "engine_mguhwear": 0,
+      "engine_eswear": 0,
+      "engine_cewear": 0,
+      "engine_icewear": 0,
+      "engine_mgukwear": 0,
+      "engine_tcwear": 0
+    }
+  ]
+}
