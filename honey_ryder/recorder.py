@@ -1,17 +1,16 @@
-
 import logging
 from typing import List, Union, Dict
 
 from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE
 
 from honey_ryder.config import RecorderConfiguration
-#from honey_ryder.connectors.heart_beat_monitor import SerialSensor, _detect_port
-from honey_ryder.connectors.influxdb.influxdb import InfluxDBConnector, \
-    influxdb_format_packet
+# from honey_ryder.connectors.heart_beat_monitor import SerialSensor, _detect_port
+from honey_ryder.connectors.influxdb.influxdb import InfluxDBConnector
 from honey_ryder.connectors.kafka import KafkaConnector
 from honey_ryder.session.session import Race
 from honey_ryder.telemetry.constants import SESSION_TYPE, TRACK_IDS, DRIVERS, TEAMS
 from honey_ryder.telemetry.listener import TelemetryFeed
+from honey_ryder.connectors.influxdb.formatters.packet_format import formatter
 
 logging.basicConfig(
     level=logging.INFO,
@@ -60,9 +59,9 @@ class DataRecorder:
         self.influxdb.write(data)
         return True
 
-    def get_heart_rate(self):
-        sensor_reader = SerialSensor(port=_detect_port())
-        return sensor_reader.read()
+    # def get_heart_rate(self):
+    #     sensor_reader = SerialSensor(port=_detect_port())
+    #     return sensor_reader.read()
 
     def write_to_file(self) -> bool:
         # with open('/Volumes/WORK MAC/F1_2021_Data/full_data.json', 'w') as \
@@ -182,22 +181,23 @@ class DataRecorder:
 
                 for driver in participants:
                     driver['name'] = DRIVERS[driver['m_driver_id']] if driver[
-                        'm_driver_id'] in DRIVERS else 'Unknown'
+                                                                           'm_driver_id'] in DRIVERS else 'Unknown'
                     driver['team'] = TEAMS[driver['m_team_id']] if driver[
-                        'm_team_id'] in TEAMS else 'Unknown'
+                                                                       'm_team_id'] in TEAMS else 'Unknown'
 
             if not current_lap_number or not self.player_car_index > -1 \
                     or not session_details:
                 continue
 
             if self.influxdb:
-                player_formatted = influxdb_format_packet(
-                    packet, self.player_car_index, session_details, current_lap_number)
-                teammate_formatted = influxdb_format_packet(
-                    packet, self.player_car_index, session_details, current_lap_number)
+                player_formatted = self.format_packet(
+                    packet, self.player_car_index, session_details,
+                    current_lap_number, participants)
+                # teammate_formatted = influxdb_format_packet(
+                #     packet, self.player_car_index, session_details, current_lap_number)
                 if player_formatted:
                     self.write_to_influxdb(player_formatted)
-                    #self.write_to_influxdb(teammate)
+                    # self.write_to_influxdb(teammate)
         #
         #
 
@@ -254,3 +254,9 @@ class DataRecorder:
         #
         # if self.influxdb:
         #     self.influxdb.write(influxdb_data)
+
+    def format_packet(self, packet, player_car_index, session_details,
+                      current_lap_number, participants):
+
+        return formatter(packet, player_car_index, session_details,
+                  current_lap_number, participants)
