@@ -4,13 +4,18 @@ Connector for sending data to the time series database InfluxDB.
 See - https://www.influxdata.com/
 """
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, NamedTuple
 
 from influxdb_client.client.write_api import SYNCHRONOUS
+from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE, PacketMotionData, \
+    PacketCarTelemetryData, PacketParticipantsData, PacketEventData, PacketSessionData, \
+    Packet
 
 from honey_ryder.config import InfluxDBConfiguration
 from influxdb_client import InfluxDBClient
 import logging
+
+from honey_ryder.session.session import Race
 
 logging.basicConfig(
     level=logging.INFO,
@@ -96,13 +101,5 @@ class InfluxDBConnector:
         # see https://github.com/influxdata/influxdb-client-python
 
         # write_api = self.connection.write_api(write_options=SYNCHRONOUS)
-        formatted_packet = self.format_packet(data)
-        self.write_api.write(self.config.bucket, self.config.org, formatted_packet)
+        self.write_api.write(self.config.bucket, self.config.org, data)
         # async_result.get()
-
-    def format_packet(self, data: Dict, type: str):
-
-        if type == 'PacketMotionData':
-            logger.info('Processing Motion Packet')
-
-        return True

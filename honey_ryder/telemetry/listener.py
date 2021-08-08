@@ -1,7 +1,7 @@
-import socket
 from typing import Union, Dict
 from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE, PacketHeader
 from telemetry_f1_2021.listener import TelemetryListener
+
 
 class TelemetryFeed:
 
@@ -25,54 +25,8 @@ class TelemetryFeed:
             self._player_car_index = header.player_car_index
         return self._player_car_index
 
-    def get_latest(self):
-
-        packet_data = self.listener.get()
-        data = packet_data.to_dict()
-
-        # setup car's data location in the array of all cars.
-        # setup details about who the player is driving for and their teammate
-        if packet_type.__name__ == 'PacketParticipantsData' and self.player_index == -1:
-            if not self._player_car_index:
-                self.player_index = header.player_car_index
-
-            self.player = data['participants'][self.player_index]
-
-            for i, racer in enumerate(data['participants']):
-                if racer['team_id'] == self.player['team_id'] and \
-                        racer['driver_id'] != self.player['driver_id']:
-                    self.teammate = racer
-                    self.teammate_index = i
-                    break
-
-        # spin until we get setup
-        if not self.player:
-            return None, None
-
-        team_data = {
-            'header': header.to_dict(),
-            'type': packet_type.__name__,
-            'player': self.player,
-            'teammate': self.teammate,
-            'player_data': {},
-            'teammate_data': {}
-        }
-
-        if packet_type.__name__ not in ['PacketParticipantsData']:
-            for name, value in data.items():
-
-                # skip adding header again
-                if name == 'header':
-                    continue
-
-                if isinstance(value, list) and len(value) == 22:
-                    team_data['player_data'] |= value[self.player_index]
-                    team_data['teammate_data'] |= value[self.teammate_index]
-                else:
-                    team_data['player_data'][name] = value
-                    team_data['teammate_data'][name] = value
-
-        return data, team_data
+    def get_latest(self) -> Dict:
+        return self.listener.get()
 
 
 def _flat(key, data) -> Dict:
