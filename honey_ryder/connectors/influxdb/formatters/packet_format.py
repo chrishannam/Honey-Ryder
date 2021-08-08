@@ -110,8 +110,11 @@ def format_grid_packet(data: Packet, index: int, race: Race, lap: int,
 
     formatted_data = []
     packet_type: str = 'unknown'
-    driver_name = participants[index]['name'].replace(' ', '\ ')
-    driver_team = participants[index]['team'].replace(' ', '\ ')
+    if participants[index]['name'] not in ['', 'unknown']:
+        driver_name = participants[index]['name'].replace(' ', '\ ')
+        driver_team = participants[index]['team'].replace(' ', '\ ')
+    else:
+        return None
 
     for key, value in data.to_dict().items():
         if key == 'm_header':
@@ -126,10 +129,10 @@ def format_grid_packet(data: Packet, index: int, race: Race, lap: int,
             else:
                 for driver_index, driver_data in enumerate(value):
                     driver_details = participants[driver_index]
-
-                    formatted_data += log_driver_from_list(driver_details, race,
-                                                               packet_type,
-                                                           lap, driver_data)
+                    if driver_details['m_race_number'] != 0:
+                        formatted_data += log_driver_from_list(driver_details, race,
+                                                                   packet_type,
+                                                               lap, driver_data)
 
         elif isinstance(value, list) and len(value) == 4:
             # each corner of the car in this order RL, RR, FL, FR

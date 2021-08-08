@@ -180,10 +180,10 @@ class DataRecorder:
                 participants = packet.to_dict()['m_participants']
 
                 for driver in participants:
-                    driver['name'] = DRIVERS[driver['m_driver_id']] if driver[
-                                                                           'm_driver_id'] in DRIVERS else 'Unknown'
-                    driver['team'] = TEAMS[driver['m_team_id']] if driver[
-                                                                       'm_team_id'] in TEAMS else 'Unknown'
+                    driver['name'] = DRIVERS[driver['m_driver_id']] \
+                        if driver['m_driver_id'] in DRIVERS else driver['m_name']
+                    driver['team'] = TEAMS[driver['m_team_id']] \
+                        if driver['m_team_id'] in TEAMS else 'Unknown'
 
             if not current_lap_number or not self.player_car_index > -1 \
                     or not session_details:
