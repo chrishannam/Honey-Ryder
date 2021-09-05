@@ -1,10 +1,9 @@
+import socket
 from typing import Union, Dict
-from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE, PacketHeader
-from telemetry_f1_2021.listener import TelemetryListener
+from telemetry_f1_2021.cleaned_packets import HEADER_FIELD_TO_PACKET_TYPE, PacketHeader
 
 
 class TelemetryFeed:
-
     _player_car_index: Union[int, None] = None
     _player_team: str
     teammate: Dict
@@ -18,15 +17,23 @@ class TelemetryFeed:
 
         if not host:
             host = ''
-        self.listener = TelemetryListener(port=port, host=host)
+
+        self.socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+        self.socket.bind((host, port))
+
+    def get_latest(self):
+        packet = self.socket.recv(2048)
+        header = PacketHeader.from_buffer_copy(packet)
+
+        key = (header.packet_format, header.packet_version, header.packet_id)
+
+        return HEADER_FIELD_TO_PACKET_TYPE[key].unpack(packet), \
+               HEADER_FIELD_TO_PACKET_TYPE[key]
 
     def player_car_index(self, header: PacketHeader = None):
         if not self._player_car_index and header:
             self._player_car_index = header.player_car_index
         return self._player_car_index
-
-    def get_latest(self) -> Dict:
-        return self.listener.get()
 
 
 def _flat(key, data) -> Dict:

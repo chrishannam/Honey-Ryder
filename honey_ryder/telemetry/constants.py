@@ -3,15 +3,31 @@ More info is available here:
 https://forums.codemasters.com/topic/54423-f1%C2%AE-2020-udp-specification/
 """
 #
-PACKET_MAPPER = {
-    'PacketCarTelemetryData': 'telemetry',
-    'PacketLapData': 'lap',
-    'PacketMotionData': 'motion',
-    'PacketSessionData': 'session',
-    'PacketCarStatusData': 'status',
-    'PacketCarSetupData': 'setup',
-    'PacketParticipantsData': 'participants',
-}
+# PACKET_MAPPER = {
+#     'PacketCarTelemetryData': 'telemetry',
+#     'PacketLapData': 'lap',
+#     'PacketMotionData': 'motion',
+#     'PacketSessionData': 'session',
+#     'PacketCarStatusData': 'status',
+#     'PacketCarSetupData': 'setup',
+#     'PacketParticipantsData': 'participants',
+#     'PacketCarDamageData': 'damage',
+#
+# }
+# HEADER_FIELD_TO_PACKET_TYPE = {
+#     (2021, 1, 0): PacketMotionData,
+#     (2021, 1, 1): PacketSessionData,
+#     (2021, 1, 2): PacketLapData,
+#     (2021, 1, 3): PacketEventData,
+#     (2021, 1, 4): PacketParticipantsData,
+#     (2021, 1, 5): PacketCarSetupData,
+#     (2021, 1, 6): PacketCarTelemetryData,
+#     (2021, 1, 7): PacketCarStatusData,
+#     (2021, 1, 8): PacketFinalClassificationData,
+#     (2021, 1, 9): PacketLobbyInfoData,
+#     (2021, 1, 10): PacketCarDamageData,
+#     (2021, 1, 11): PacketSessionHistoryData,
+# }
 
 TYRE_COMPOUND = {
     16: 'C5',  # super soft
