@@ -6,6 +6,7 @@ from telemetry_f1_2021.cleaned_packets import HEADER_FIELD_TO_PACKET_TYPE, Packe
 class TelemetryFeed:
     _player_car_index: Union[int, None] = None
     _player_team: str
+    _socket = None
     teammate: Dict
     teammate_index: int = -1
     player_index: int = -1
@@ -13,13 +14,21 @@ class TelemetryFeed:
 
     def __init__(self, port: int = None, host: str = None):
         if not port:
-            port = 20777
+            self.port = 20777
+        else:
+            self.port = port
 
         if not host:
-            host = ''
+            self.host = ''
+        else:
+            self.host = host
 
-        self.socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-        self.socket.bind((host, port))
+    @property
+    def socket(self):
+        if not self._socket:
+            self._socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+            self._socket.bind((self.host, self.port))
+        return self._socket
 
     def get_latest(self):
         packet = self.socket.recv(2048)

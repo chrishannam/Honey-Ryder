@@ -2,12 +2,12 @@
   "header": {
     "packet_format": 2021,
     "game_major_version": 1,
-    "game_minor_version": 4,
+    "game_minor_version": 12,
     "packet_version": 1,
     "packet_id": 5,
-    "session_uid": 4026825252190519547,
-    "session_time": 0.03,
-    "frame_identifier": 0,
+    "session_uid": 12158528324812051775,
+    "session_time": 6.399,
+    "frame_identifier": 81,
     "player_car_index": 19,
     "secondary_player_car_index": 255
   },
@@ -34,7 +34,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -58,7 +58,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -82,7 +82,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -106,7 +106,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -130,7 +130,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -154,7 +154,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -178,7 +178,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -202,7 +202,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -226,7 +226,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -250,7 +250,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -274,7 +274,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -298,7 +298,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -322,7 +322,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -346,7 +346,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -370,7 +370,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -394,7 +394,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -418,7 +418,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -442,7 +442,7 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 8,
@@ -466,31 +466,31 @@
       "front_left_tyre_pressure": 22.2,
       "front_right_tyre_pressure": 22.2,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
-      "front_wing": 3,
-      "rear_wing": 6,
-      "on_throttle": 55,
+      "front_wing": 7,
+      "rear_wing": 8,
+      "on_throttle": 72,
       "off_throttle": 55,
       "front_camber": -2.8,
-      "rear_camber": -1.3,
-      "front_toe": 0.07,
-      "rear_toe": 0.26,
+      "rear_camber": -1.7,
+      "front_toe": 0.06,
+      "rear_toe": 0.29,
       "front_suspension": 3,
-      "rear_suspension": 4,
-      "front_anti_roll_bar": 5,
-      "rear_anti_roll_bar": 9,
-      "front_suspension_height": 2,
-      "rear_suspension_height": 5,
+      "rear_suspension": 2,
+      "front_anti_roll_bar": 7,
+      "rear_anti_roll_bar": 2,
+      "front_suspension_height": 3,
+      "rear_suspension_height": 7,
       "brake_pressure": 95,
-      "brake_bias": 53,
-      "rear_left_tyre_pressure": 19.5,
-      "rear_right_tyre_pressure": 19.9,
-      "front_left_tyre_pressure": 21.4,
-      "front_right_tyre_pressure": 21.8,
+      "brake_bias": 54,
+      "rear_left_tyre_pressure": 23.1,
+      "rear_right_tyre_pressure": 23.1,
+      "front_left_tyre_pressure": 24.6,
+      "front_right_tyre_pressure": 24.6,
       "ballast": 6,
-      "fuel_load": 28.0
+      "fuel_load": 108.0
     },
     {
       "front_wing": 0,

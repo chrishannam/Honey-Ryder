@@ -2,5 +2,6 @@ click~=8.0.1
 fastavro
 influxdb-client
 kafka-python
+marshmallow
 pyserial
 Telemetry-F1-2021

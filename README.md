@@ -52,3 +52,6 @@ YouTube:
 # Telemetry
 Wheel speed in meters per second.
 Wheel slip is 0 -> 1  
+
+
+https://www.reddit.com/user/jeppe96/posts/
