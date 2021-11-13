@@ -80,26 +80,40 @@ class DataRecorder:
         for key, value in packet.items():
 
             if key == 'weather':
-                points.append(self.create_point(key, WEATHER[value]))
+                points.append(self.create_point('Session', key, WEATHER[value]))
 
             elif key == 'marshal_zones':
                 for counter, zone in enumerate(value):
-                    points.append(self.create_point(counter, zone['zone_flag']))
+                    points.append(self.create_point('Session', counter,
+                                                    zone['zone_flag']))
 
             elif key == 'weather_forecast_samples':
                 for reading in value:
                     for k, v in reading.items():
-                        points.append(self.create_point(k, v))
+                        points.append(self.create_point('Session', k, v))
 
             else:
-                points.append(self.create_point(key, value))
+                points.append(self.create_point('Session', key, value))
 
         return points
 
-    def create_point(self, key, value):
-        return Point("SessionData").tag('circuit', self.tags['circuit']) \
-                        .tag('session_uid', self.tags['session_uid']) \
-                        .field(key, value)
+    def create_point(self, packet_name, key, value, driver_name=None, team=None,
+                     lap=None):
+        point = Point(packet_name).tag('circuit', self.tags['circuit']) \
+            .tag('session_uid', self.tags['session_uid']) \
+            .tag('session_type', self.tags['session_type']) \
+            .field(key, value)
+
+        if team:
+            point.tag('team', TEAMS[self.driver['team_id']])
+
+        if lap:
+            point.tag('lap', lap)
+
+        if driver_name:
+            point.tag('driver', driver_name)
+
+        return point
 
     def collect(self):
         tags_filled = False
@@ -156,10 +170,45 @@ class DataRecorder:
             elif packet_name in ['PacketCarSetupData', 'PacketMotionData',
                                  'PacketCarDamageData', 'PacketCarTelemetryData',
                                  'PacketCarStatusData']:
-                points = extract_car_data(packet_dict, self.participants, TAGS, laps)
+                points = self.extract_car_array_data(packet_dict, packet_name)
 
             if points:
                 self.write_to_influxdb(points)
+
+    def extract_car_array_data(self, packet: Dict, packet_name: str):
+        points = []
+        packet_name = packet_name.replace('Packet', '').replace('Data', '').replace(
+            'Car', '')
+
+        for idx, setup in enumerate(packet[list(packet.keys())[0]]):
+            driver = self.participants[idx]
+
+            # check if this is the player
+            if driver['driver_id'] not in DRIVERS:
+                driver_name = driver['name']
+            else:
+                driver_name = DRIVERS[driver['driver_id']]
+
+            if not setup or not driver_name:
+                continue
+
+            for key, value in setup.items():
+                if isinstance(value, list):
+                    # The order is as follows[RL, RR, FL, FR]
+                    # we have four things, usually tyres
+                    for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
+                        point = self.create_point(packet_name, key, float(value))
+
+                        if corner.startswith('r'):
+                            point.tag('area_of_car', 'rear')
+                        else:
+                            point.tag('area_of_car', 'front')
+                        point.tag('corner_of_car', corner)
+                else:
+                    point = self.create_point(packet_name, key, float(value))
+
+                points.append(point)
+        return points
 
 
 def extract_laps_data(packet: Dict, drivers, tags):
@@ -180,59 +229,14 @@ def extract_laps_data(packet: Dict, drivers, tags):
             if key == 'current_lap_num':
                 continue
             else:
-                points.append(Point("LapData").tag('circuit', tags['circuit'])
+                points.append(Point('LapData').tag('circuit', tags['circuit'])
                           .tag('session_uid', tags['session_uid'])
-                          .tag('session_uid', tags['session_type'])
+                          .tag('session_type', tags['session_type'])
                           .tag('team', TEAMS[driver['team_id']])
                           .tag('lap', lap['current_lap_num'])
                           .tag('driver', driver_name)
                           .field(key, float(value))
                 )
-    return points
-
-
-def extract_car_data(packet: Dict, drivers, tags, laps):
-    points = []
-    for idx, setup in enumerate(packet[list(packet.keys())[0]]):
-        driver = drivers[idx]
-        lap = laps[idx]
-
-        # check if this is the player
-        if driver['driver_id'] not in DRIVERS:
-            driver_name = driver['name']
-        else:
-            driver_name = DRIVERS[driver['driver_id']]
-
-        if not setup or not driver_name:
-            continue
-
-        for key, value in setup.items():
-            if isinstance(value, list):
-                # The order is as follows[RL, RR, FL, FR]
-                # we have four things, usually tyres
-                for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
-                    point = Point("CarSetup").tag('circuit', tags['circuit']) \
-                        .tag('session_uid', tags['session_uid']) \
-                        .tag('session_uid', tags['session_type']) \
-                        .tag('team', TEAMS[driver['team_id']]) \
-                        .tag('lap', lap['current_lap_num']) \
-                        .tag('driver', driver_name) \
-                        .field(key, float(value[location]))
-                    if corner.startswith('r'):
-                        point.tag('area_of_car', 'rear')
-                    else:
-                        point.tag('area_of_car', 'front')
-                    point.tag('corner_of_car', corner)
-            else:
-                point = Point("CarSetup").tag('circuit', tags['circuit'])\
-                              .tag('session_uid', tags['session_uid'])\
-                              .tag('session_uid', tags['session_type'])\
-                              .tag('team', TEAMS[driver['team_id']])\
-                              .tag('lap', lap['current_lap_num'])\
-                              .tag('driver', driver_name)\
-                              .field(key, float(value))
-
-            points.append(point)
     return points
 
 
