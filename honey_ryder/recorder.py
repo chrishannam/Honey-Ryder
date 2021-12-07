@@ -2,19 +2,19 @@ import logging
 from typing import List, Union, Dict
 
 from influxdb_client import Point
-from telemetry_f1_2021.cleaned_packets import HEADER_FIELD_TO_PACKET_TYPE
+#from telemetry_f1_2021.cleaned_packets import HEADER_FIELD_TO_PACKET_TYPE
 
 from honey_ryder.config import RecorderConfiguration
 # from honey_ryder.connectors.heart_beat_monitor import SerialSensor, _detect_port
 from honey_ryder.connectors.influxdb.influxdb import InfluxDBConnector
 from honey_ryder.connectors.kafka import KafkaConnector
 from honey_ryder.constants import TAGS, BYPASS_PACKETS
-from honey_ryder.session.session import Race
+# from honey_ryder.session.session import Race
 from honey_ryder.telemetry.constants import SESSION_TYPE, TRACK_IDS, DRIVERS, TEAMS, \
     WEATHER
 from honey_ryder.telemetry.listener import TelemetryFeed
-from honey_ryder.connectors.influxdb.formatters.packet_format import formatter
-from honey_ryder.telemetry.session import Session
+# from honey_ryder.connectors.influxdb.formatters.packet_format import formatter
+# from honey_ryder.telemetry.session import Session
 
 logging.basicConfig(
     level=logging.INFO,
@@ -79,10 +79,7 @@ class DataRecorder:
         points = []
         for key, value in packet.items():
 
-            if key == 'weather':
-                points.append(self.create_point('Session', key, WEATHER[value]))
-
-            elif key == 'marshal_zones':
+            if key == 'marshal_zones':
                 for counter, zone in enumerate(value):
                     points.append(self.create_point('Session', counter,
                                                     zone['zone_flag']))
@@ -197,17 +194,24 @@ class DataRecorder:
                     # The order is as follows[RL, RR, FL, FR]
                     # we have four things, usually tyres
                     for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
-                        point = self.create_point(packet_name, key, float(value))
+                        point = self.create_point(
+                            packet_name,
+                            key,
+                            float(value[location])
+                        )
 
                         if corner.startswith('r'):
                             point.tag('area_of_car', 'rear')
                         else:
                             point.tag('area_of_car', 'front')
                         point.tag('corner_of_car', corner)
+                        points.append(point)
                 else:
+                    if 'world_forward_dir_' in key or 'world_right_dir_' in key:
+                        value = float(value)
                     point = self.create_point(packet_name, key, float(value))
 
-                points.append(point)
+                    points.append(point)
         return points
 
 
