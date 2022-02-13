@@ -1,3 +1,4 @@
+import json
 import logging
 from typing import Dict, List
 
@@ -31,7 +32,7 @@ class KafkaConnector:
             self.in_error = True
 
     def send(self, topic, message):
-        self.producer.send(topic, message)
+        self.producer.send(topic, json.dumps(message).encode())
 
     def build_data(self, name: str, value, data: Dict) -> Dict:
         data[name] = value

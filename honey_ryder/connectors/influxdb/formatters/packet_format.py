@@ -1,4 +1,4 @@
-from typing import Dict, List, Union, Any
+from typing import List, Union, Any
 
 from telemetry_f1_2021.packets import Packet, \
     HEADER_FIELD_TO_PACKET_TYPE, PacketEventData, PacketSessionData, \
