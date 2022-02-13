@@ -25,6 +25,7 @@ setuptools.setup(
         "influxdb-client",
         "kafka-python",
         "pyserial",
+        "Telemetry-F1-2021",
     ],
     include_package_data=True,
     entry_points={
