@@ -1,16 +1,20 @@
 import logging
 from typing import List, Union, Dict
 
-from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE
+from influxdb_client import Point
+#from telemetry_f1_2021.cleaned_packets import HEADER_FIELD_TO_PACKET_TYPE
 
 from honey_ryder.config import RecorderConfiguration
 # from honey_ryder.connectors.heart_beat_monitor import SerialSensor, _detect_port
 from honey_ryder.connectors.influxdb.influxdb import InfluxDBConnector
 from honey_ryder.connectors.kafka import KafkaConnector
-from honey_ryder.session.session import Race
-from honey_ryder.telemetry.constants import SESSION_TYPE, TRACK_IDS, DRIVERS, TEAMS
+from honey_ryder.constants import TAGS, BYPASS_PACKETS
+# from honey_ryder.session.session import Race
+from honey_ryder.telemetry.constants import SESSION_TYPE, TRACK_IDS, DRIVERS, TEAMS, \
+    WEATHER
 from honey_ryder.telemetry.listener import TelemetryFeed
-from honey_ryder.connectors.influxdb.formatters.packet_format import formatter
+# from honey_ryder.connectors.influxdb.formatters.packet_format import formatter
+# from honey_ryder.telemetry.session import Session
 
 logging.basicConfig(
     level=logging.INFO,
@@ -34,6 +38,8 @@ class DataRecorder:
         self.configuration: RecorderConfiguration = configuration
         self.feed = TelemetryFeed(port=port)
         self.port = port
+        self.participants = None
+        self.tags = TAGS
 
     @property
     def kafka(self):
@@ -59,204 +65,185 @@ class DataRecorder:
         self.influxdb.write(data)
         return True
 
-    # def get_heart_rate(self):
-    #     sensor_reader = SerialSensor(port=_detect_port())
-    #     return sensor_reader.read()
+    def extract_session_data(self, packet: Dict) -> List[Point]:
+        """
+        Not all the session data packet is needed, just extract the important stuff.
+        INFO_DATA_STRING = '{packet_type},' \
+                   'circuit={circuit},lap={lap},' \
+                   'session_uid={session_link_identifier},' \
+                   'session_type={session_type},' \
+                   'team={team},' \
+                   'driver={driver}' \
+                   ' {metric_name}={metric_value}'
+        """
+        points = []
+        for key, value in packet.items():
 
-    def write_to_file(self) -> bool:
-        # with open('/Volumes/WORK MAC/F1_2021_Data/full_data.json', 'w') as \
-        #         data_output:
-        #     with open('/Volumes/WORK MAC/F1_2021_Data/team_data.json',
-        #               'w') as team_output:
-        #         data_output.write('[')
-        #         team_output.write('[')
-        #         try:
-        #             while True:
-        #                 packet, team_data = self.feed.get_latest()
-        #                 #   file_output.write('cheese')
-        #
-        #                 if packet:
-        #                     data_output.write(json.dumps(packet))
-        #                     data_output.write(',\n')
-        #                 if team_data:
-        #                     team_output.write(json.dumps(team_data))
-        #                     team_output.write(',\n')
-        #             #
-        #             # if not packet:
-        #             #     continue
-        #         except KeyboardInterrupt:
-        #             print('Interrupted')
-        #             data_output.write(']')
-        #             team_output.write(']')
-        return False
+            if key == 'marshal_zones':
+                for counter, zone in enumerate(value):
+                    points.append(self.create_point('Session', counter,
+                                                    zone['zone_flag']))
 
-    def _prepare_data(self, packet):
-        data = packet.to_dict()
-        header = data['m_header']
+            elif key == 'weather_forecast_samples':
+                for reading in value:
+                    for k, v in reading.items():
+                        points.append(self.create_point('Session', k, v))
 
-        key = (header['m_packet_format'], header['m_packet_version'],
-               header['m_packet_id'])
+            else:
+                points.append(self.create_point('Session', key, value))
 
-        packet_type_class = HEADER_FIELD_TO_PACKET_TYPE[key]
-        data_type = packet_type_class.__name__
+        return points
 
-        # setup car's data location in the array of all cars.
-        # setup details about who the player is driving for and their teammate
+    def create_point(self, packet_name, key, value, driver_name=None, team=None,
+                     lap=None):
+        point = Point(packet_name).tag('circuit', self.tags['circuit']) \
+            .tag('session_uid', self.tags['session_uid']) \
+            .tag('session_type', self.tags['session_type']) \
+            .field(key, value)
 
-        player_data = {}
-        teammate_data = {}
+        if team:
+            point.tag('team', TEAMS[self.driver['team_id']])
 
-        if data_type == 'PacketParticipantsData' and self.player_car_index == -1:
-            if self.player_car_index == -1:
-                self.player_car_index = header['m_player_car_index']
+        if lap:
+            point.tag('lap', lap)
 
-            self.player = data['m_participants'][self.player_car_index]
+        if driver_name:
+            point.tag('driver', driver_name)
 
-            for i, racer in enumerate(data['m_participants']):
-                if racer['m_team_id'] == self.player['m_team_id'] and \
-                        racer['m_driver_id'] != self.player['m_driver_id']:
-                    self.teammate = racer
-                    self.teammate_car_index = i
-                    break
+        return point
 
-        # spin until we get setup
-        if not self.player:
-            return {}
+    def collect(self):
+        tags_filled = False
 
-        if data_type not in ['PacketParticipantsData']:
-            for name, value in data.items():
+        laps = False
+        while True:
+            packet, packet_type = self.feed.get_latest()
 
-                # skip adding header again
-                if name == 'header':
+            # packets to avoid for now
+            if packet_type.__name__ in BYPASS_PACKETS:
+                continue
+
+            driver = packet.header.player_car_index
+
+            # packet needs looping and writing to influxdb
+            points = []
+
+            header = packet.header
+            packet_name = packet_type.__name__
+            packet_dict = packet.to_dict()
+
+            del packet_dict['header']
+
+            if not tags_filled:
+                if packet_name == 'PacketSessionData':
+                    self.tags['circuit'] = TRACK_IDS[packet.track_id]
+                    self.tags['session_uid'] = header.session_uid
+                    self.tags['session_type'] = SESSION_TYPE[packet_dict['session_type']]
+                    tags_filled = True
+                else:
                     continue
 
-                if isinstance(value, list) and len(value) == 22:
-                    player_data |= value[self.player_car_index]
-                    teammate_data |= value[self.teammate_car_index]
+            if packet_name == 'PacketSessionData':
+                points = self.extract_session_data(packet_dict)
+
+            if not self.participants:
+                if packet_name != 'PacketParticipantsData':
+                    continue
+                # map drivers to positions in the array of 20
+                self.participants = packet_dict['participants']
+                continue
+
+            if not laps:
+                if packet_name == 'PacketLapData':
+                    laps = packet_dict['lap_data']
                 else:
-                    player_data[name] = value
-                    teammate_data[name] = value
+                    continue
 
-        return {
-            'type': data_type,
-            'player_data': player_data,
-            'teammate_data': teammate_data,
-        }
+            # updates laps
+            if packet_name == 'PacketLapData':
+                laps = packet_dict['lap_data']
+                points = extract_laps_data(packet_dict, self.participants, self.tags)
 
-    def listen(self):
-        session_details = None
-        current_lap_number = None
-        participants = None
-        logger.info(f'Starting server to receive telemetry data on port: {self.port}.')
+            elif packet_name in ['PacketCarSetupData', 'PacketMotionData',
+                                 'PacketCarDamageData', 'PacketCarTelemetryData',
+                                 'PacketCarStatusData']:
+                points = self.extract_car_array_data(packet_dict, packet_name)
 
-        while True:
-            packet = self.feed.get_latest()
+            if points:
+                self.write_to_influxdb(points)
 
-            if not packet:
+    def extract_car_array_data(self, packet: Dict, packet_name: str):
+        points = []
+        packet_name = packet_name.replace('Packet', '').replace('Data', '').replace(
+            'Car', '')
+
+        for idx, setup in enumerate(packet[list(packet.keys())[0]]):
+            driver = self.participants[idx]
+
+            # check if this is the player
+            if driver['driver_id'] not in DRIVERS:
+                driver_name = driver['name']
+            else:
+                driver_name = DRIVERS[driver['driver_id']]
+
+            if not setup or not driver_name:
                 continue
 
-            data = self._prepare_data(packet=packet)
+            for key, value in setup.items():
+                if isinstance(value, list):
+                    # The order is as follows[RL, RR, FL, FR]
+                    # we have four things, usually tyres
+                    for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
+                        point = self.create_point(
+                            packet_name,
+                            key,
+                            float(value[location])
+                        )
 
-            if not data:
+                        if corner.startswith('r'):
+                            point.tag('area_of_car', 'rear')
+                        else:
+                            point.tag('area_of_car', 'front')
+                        point.tag('corner_of_car', corner)
+                        points.append(point)
+                else:
+                    if 'world_forward_dir_' in key or 'world_right_dir_' in key:
+                        value = float(value)
+                    point = self.create_point(packet_name, key, float(value))
+
+                    points.append(point)
+        return points
+
+
+def extract_laps_data(packet: Dict, drivers, tags):
+    points = []
+    for idx, lap in enumerate(packet[list(packet.keys())[0]]):
+        driver = drivers[idx]
+
+        # check if this is the player
+        if driver['driver_id'] not in DRIVERS:
+            driver_name = driver['name']
+        else:
+            driver_name = DRIVERS[driver['driver_id']]
+
+        if not lap or not driver_name:
+            continue
+
+        for key, value in lap.items():
+            if key == 'current_lap_num':
                 continue
+            else:
+                try:
+                    points.append(Point('LapData').tag('circuit', tags['circuit'])
+                              .tag('session_uid', tags['session_uid'])
+                              .tag('session_type', tags['session_type'])
+                              .tag('team', TEAMS[driver['team_id']])
+                              .tag('lap', lap['current_lap_num'])
+                              .tag('driver', driver_name)
+                              .field(key, float(value))
+                    )
+                except KeyError as exc:
+                    logger.error(f'Missing key "{exc}", while getting lap data.')
+    return points
 
-            # player = data['player_data']
-            # teammate = data['teammate_data']
-            # data_type = data['type']
-            #
-            if data['type'] == 'PacketSessionData' and not session_details:
-                session_details = Race(
-                    circuit=TRACK_IDS[data['player_data']['m_track_id']],
-                    session_type=SESSION_TYPE[data['player_data']['m_session_type']],
-                    session_link_identifier=
-                    data['player_data']['m_session_link_identifier'],
-                )
-                continue
 
-            if data['type'] == 'PacketLapData':
-                current_lap_number = data['player_data']['m_current_lap_num']
-
-            if data['type'] == 'PacketParticipantsData' and not participants:
-                participants = packet.to_dict()['m_participants']
-
-                for driver in participants:
-                    driver['name'] = DRIVERS[driver['m_driver_id']] \
-                        if driver['m_driver_id'] in DRIVERS else driver['m_name']
-                    driver['team'] = TEAMS[driver['m_team_id']] \
-                        if driver['m_team_id'] in TEAMS else 'Unknown'
-
-            if not current_lap_number or not self.player_car_index > -1 \
-                    or not session_details:
-                continue
-
-            if self.influxdb:
-                player_formatted = self.format_packet(
-                    packet, self.player_car_index, session_details,
-                    current_lap_number, participants)
-                # teammate_formatted = influxdb_format_packet(
-                #     packet, self.player_car_index, session_details, current_lap_number)
-                if player_formatted:
-                    self.write_to_influxdb(player_formatted)
-                    # self.write_to_influxdb(teammate)
-        #
-        #
-
-        #
-        # # we are late, so spin until we find out which race we are at
-        # if not race_details:
-        #     continue
-        #
-        # if packet['type'] == 'PacketLapData_V1':
-        #     lap_number = int(packet['currentLapNum'])
-        #
-        # if packet['type'] in PACKET_MAPPER.keys():
-        #     packet_name: str = 'unknown'
-        #
-        #     for name, value in packet.items():
-        #
-        #         if name == 'name':
-        #             packet_name = value
-        #
-        #         if name in ['type', 'mfdPanelIndex', 'buttonStatus', 'name']:
-        #             continue
-        #
-        #         # drivers name are bytes
-        #         if name == 'name' and packet['type'] == 'PacketParticipantsData_V1':
-        #             if type(value) == bytes:
-        #                 value = value.decode('utf-8')
-        #
-        #         # FIXME
-        #         if name not in ['sessionUID', 'team_name']:
-        #             if self.influxdb:
-        #                 influxdb_data.append(
-        #                     f'{packet_name},track={race_details.circuit},'
-        #                     f'lap={lap_number},'
-        #                     f'session_uid={race_details.session_uid},'
-        #                     f'session_type={race_details.session_type}'
-        #                     f' {name}={value}'
-        #                 )
-        #
-        #             if self.kafka:
-        #                 kafka_data = self.kafka.build_data(
-        #                     name=name, value=value, data=kafka_data
-        #                 )
-        #
-        # if self.kafka:
-        #     kafka_msg = {
-        #         'lap_number': lap_number,
-        #         'circuit': race_details.circuit,
-        #         'session_uid': race_details.session_uid,
-        #         'session_type': race_details.session_type,
-        #         'data': kafka_data,
-        #     }
-        #     if packet_name:
-        #         self.kafka.send(packet_name, json.dumps(kafka_msg).encode('utf-8'))
-        #
-        # if self.influxdb:
-        #     self.influxdb.write(influxdb_data)
-
-    def format_packet(self, packet, player_car_index, session_details,
-                      current_lap_number, participants):
-
-        return formatter(packet, player_car_index, session_details,
-                  current_lap_number, participants)

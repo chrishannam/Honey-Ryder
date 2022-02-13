@@ -21,8 +21,14 @@ CAR_DATA_STRING = '{packet_type},' \
                   'team={team},' \
                   'driver={driver},' \
                   'area_of_car={end},' \
-                  'corner={corner}' \
+                  'corner_of_car={corner_of_car}' \
                   ' {metric_name}={metric_value}'
+
+FASTEST_LAP = '{packet_type},' \
+              'circuit={race.circuit},lap={lap},' \
+              'session_uid={session_link_identifier},' \
+              'session_type={session_type}' \
+              ' fastest_lap={lap_time}'
 
 
 def formatter(data, index: int, race: Race, lap: int, participants) -> \
@@ -30,7 +36,6 @@ def formatter(data, index: int, race: Race, lap: int, participants) -> \
     """
     index is the position in list of the car we are interested in.
     """
-    formatted = {}
 
     if data.__class__.__name__ in ['PacketParticipantsData',
                                    'PacketSessionHistoryData']:
@@ -85,10 +90,10 @@ def format_session_packet(data: PacketSessionData, player_index: int, race: Race
     packet_type = None
 
     for key, value in data.to_dict().items():
-        if key == 'm_header':
+        if key == 'header':
             header = value
-            key = (header['m_packet_format'],
-                   header['m_packet_version'], header['m_packet_id'])
+            key = (header['packet_format'],
+                   header['packet_version'], header['packet_id'])
             packet_type = HEADER_FIELD_TO_PACKET_TYPE[key].__name__
         elif key in ['m_weather_forecast_samples', 'm_marshal_zones']:
             continue
@@ -97,7 +102,7 @@ def format_session_packet(data: PacketSessionData, player_index: int, race: Race
                 f'{packet_type.replace("Packet", "")},'
                 f'circuit={race.circuit},lap={lap},'
                 f'session_uid={race.session_link_identifier},'
-                f'session_type={race.session_type} {key.replace("m_", "", 1)}={value}'
+                f'session_type={race.session_type} {key}={value}'
             )
     return formatted_data
 
@@ -142,7 +147,7 @@ def format_grid_packet(data: Packet, index: int, race: Race, lap: int,
                     f'{packet_type.replace("Packet", "")},'
                     f'circuit={race.circuit},lap={lap},'
                     f'session_uid={race.session_link_identifier},'
-                    f'session_type={race.session_type},corner={corner},'
+                    f'session_type={race.session_type},corner_of_car={corner},'
                     f'team={driver_team},'
                     f'driver={driver_name},'
                     f'area_of_car={end}'
@@ -170,14 +175,6 @@ def log_driver_from_list(driver,
             # each corner of the car in this order RL, RR, FL, FR
             for i, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
                 end = 'front' if corner.startswith('f') else 'rear'
-                # formatted_data.append(
-                #     f'{packet_type.replace("Packet", "")},'
-                #     f'circuit={race.circuit},lap={lap},'
-                #     f'session_uid={race.session_link_identifier},'
-                #     f'session_type={race.session_type},corner={corner},'
-                #     f'area_of_car={end}'
-                #     f' {sub_key}={sub_value[i]}'
-                # )
                 formatted_data.append(
                         CAR_DATA_STRING.format(
                             packet_type=packet_type.replace("Packet", ""),
@@ -188,7 +185,7 @@ def log_driver_from_list(driver,
                             session_link_identifier=race.session_link_identifier,
                             session_type=race.session_type,
                             end=end,
-                            corner=corner,
+                            corner_of_car=corner,
                             metric_name=sub_key.replace('m_', '', 1),
                             metric_value=sub_value[i],
                         )
