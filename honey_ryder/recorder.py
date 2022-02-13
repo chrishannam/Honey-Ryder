@@ -233,14 +233,17 @@ def extract_laps_data(packet: Dict, drivers, tags):
             if key == 'current_lap_num':
                 continue
             else:
-                points.append(Point('LapData').tag('circuit', tags['circuit'])
-                          .tag('session_uid', tags['session_uid'])
-                          .tag('session_type', tags['session_type'])
-                          .tag('team', TEAMS[driver['team_id']])
-                          .tag('lap', lap['current_lap_num'])
-                          .tag('driver', driver_name)
-                          .field(key, float(value))
-                )
+                try:
+                    points.append(Point('LapData').tag('circuit', tags['circuit'])
+                              .tag('session_uid', tags['session_uid'])
+                              .tag('session_type', tags['session_type'])
+                              .tag('team', TEAMS[driver['team_id']])
+                              .tag('lap', lap['current_lap_num'])
+                              .tag('driver', driver_name)
+                              .field(key, float(value))
+                    )
+                except KeyError as exc:
+                    logger.error(f'Missing key "{exc}", while getting lap data.')
     return points
 
 

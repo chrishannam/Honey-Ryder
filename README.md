@@ -5,23 +5,24 @@ for display via any graphing application.
 [UDP Specification](https://forums.codemasters.com/topic/80231-f1-2021-udp-specification/)
 
 # Data Storage
-I used [InfluxDB](https://www.influxdata.com/) which is a great time series database.
+Is done by [InfluxDB](https://www.influxdata.com/) which is a great time series 
+database.
 See [Docker Hub](https://hub.docker.com/_/influxdb).
 ```bash
 docker pull quay.io/influxdb/influxdb:latest
 ```
 
 # Graphing Using Grafana
-I used Grafana to connect to InfluxDB. See - https://grafana.com/docs/grafana/latest/installation/docker/
+You can use Grafana to connect to InfluxDB. See - https://grafana.com/docs/grafana/latest/installation/docker/
 ```bash
 docker run -d -p 3000:3000 grafana/grafana
 ```
 
 ## Connection to InfluxDB
-Connecting to InfluxDB 2 requires 7.1 and above.
+Connecting to InfluxDB 2 requires Grafana 7.1 and above.
 
-![alt text](images/influxdb_grafana_config_1.png "Top half of config of datasource")
-![alt text](images/influxdb_grafana_config_2.png "Bottom half of config of datasource")
+![Top half of config of datasource](docs/images/influxdb_grafana_config_1.png)
+![Bottom half of config of datasource](docs/images/influxdb_grafana_config_2.png)
 
 ## Refresh Rate
 To enable sub second updates, alter the following in `/etc/grafana/grafana.ini`
@@ -37,7 +38,7 @@ min_refresh_interval = 100ms
 Next add the refresh rate as an option in the dashboard setting, otherwise you won't be able
 to select it.
 
-![alt text](images/grafana_refresh_rate.png "Set refresh rate")
+![Set refresh rate](docs/images/grafana_refresh_rate.png)
 
 # Links
 * Excellent Telemetry tool [PXG F1](https://bitbucket.org/Fiingon/pxg-f1-telemetry/src)
