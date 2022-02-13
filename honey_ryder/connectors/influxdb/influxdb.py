@@ -6,7 +6,7 @@ See - https://www.influxdata.com/
 from pathlib import Path
 from typing import List, Dict, NamedTuple
 
-from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client.client.write_api import SYNCHRONOUS, ASYNCHRONOUS
 from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE, PacketMotionData, \
     PacketCarTelemetryData, PacketParticipantsData, PacketEventData, PacketSessionData, \
     Packet
