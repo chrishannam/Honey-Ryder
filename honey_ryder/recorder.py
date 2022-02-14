@@ -109,7 +109,7 @@ class DataRecorder:
             .field(key, value)
 
         if team:
-            point.tag('team', TEAMS[self.driver['team_id']])
+            point.tag('team', team)
 
         if lap:
             point.tag('lap', lap)
@@ -130,8 +130,6 @@ class DataRecorder:
             if packet_type.__name__ in BYPASS_PACKETS:
                 continue
 
-            driver = packet.header.player_car_index
-
             # packet needs looping and writing to influxdb
             points = []
 
@@ -141,7 +139,6 @@ class DataRecorder:
 
             # updates laps
             influxdb_points = []
-            kafka_points = []
 
             del packet_dict['header']
 
@@ -157,8 +154,6 @@ class DataRecorder:
             if packet_name == 'PacketSessionData':
                 if self.influxdb:
                     influxdb_points = self.extract_session_data_influxdb(packet_dict)
-                if self.kafka:
-                    kafka_points = packet_dict
 
             if not self.participants:
                 if packet_name != 'PacketParticipantsData':
@@ -167,27 +162,18 @@ class DataRecorder:
                 self.participants = packet_dict['participants']
                 continue
 
-            if not laps:
-                if packet_name == 'PacketLapData':
-                    laps = packet_dict['lap_data']
-                else:
-                    continue
-
             if packet_name == 'PacketLapData':
+                self.laps = packet_dict['lap_data']
                 laps = packet_dict['lap_data']
 
                 if self.influxdb:
-                    influxdb_points = extract_laps_data(packet_dict, self.participants, self.tags, influx=True)
-                if self.kafka:
-                    kafka_points = extract_laps_data(packet_dict, self.participants, self.tags, kafka=True)
+                    influxdb_points = extract_laps_data(packet_dict, self.participants, self.tags)
 
             elif packet_name in ['PacketCarSetupData', 'PacketMotionData',
                                  'PacketCarDamageData', 'PacketCarTelemetryData',
                                  'PacketCarStatusData']:
                 if self.influxdb:
-                    influxdb_points = self.extract_car_array_data(packet_dict, packet_name, influx=True)
-                if self.kafka:
-                    kafka_points = self.extract_car_array_data(packet_dict, packet_name, kafka=True)
+                    influxdb_points = self.extract_car_array_data(packet_dict, packet_name, laps)
 
             if self.influxdb and influxdb_points:
                 self.write_to_influxdb(points)
@@ -197,7 +183,7 @@ class DataRecorder:
                 topic = topic.lower()
                 self.write_to_kafka(topic=topic, data=packet_dict)
 
-    def extract_car_array_data(self, packet: Dict, packet_name: str, influx: bool = False, kafka: bool = False):
+    def extract_car_array_data(self, packet: Dict, packet_name: str, laps):
         points = []
         packet_name = packet_name.replace('Packet', '').replace('Data', '').replace(
             'Car', '')
@@ -215,35 +201,40 @@ class DataRecorder:
                 continue
 
             for key, value in setup.items():
-                if influx:
-                    if isinstance(value, list):
-                        # The order is as follows[RL, RR, FL, FR]
-                        # we have four things, usually tyres
-                        for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
-                            point = self.create_point(
-                                packet_name,
-                                key,
-                                float(value[location])
-                            )
+                if isinstance(value, list):
+                    # The order is as follows[RL, RR, FL, FR]
+                    # we have four things, usually tyres
+                    for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
+                        point = self.create_point(
+                            packet_name,
+                            key,
+                            float(value[location])
+                        )
 
-                            if corner.startswith('r'):
-                                point.tag('area_of_car', 'rear')
-                            else:
-                                point.tag('area_of_car', 'front')
-                            point.tag('corner_of_car', corner)
-                            points.append(point)
-                    else:
-                        if 'world_forward_dir_' in key or 'world_right_dir_' in key:
-                            value = float(value)
-                        point = self.create_point(packet_name, key, float(value))
+                        if corner.startswith('r'):
+                            point.tag('area_of_car', 'rear')
+                        else:
+                            point.tag('area_of_car', 'front')
+                        point.tag('corner_of_car', corner)
+                        point.tag('driver', driver_name)
+                        point.tag('team', driver_name)
+                        points.append(TEAMS[driver['team_id']])
+                else:
+                    if 'world_forward_dir_' in key or 'world_right_dir_' in key:
+                        value = float(value)
 
-                        points.append(point)
-                elif kafka:
-                    pass
+                    point = self.create_point(packet_name, key, float(value),
+                                              team=TEAMS[driver['team_id']],
+                                              driver_name=driver_name,
+                                              lap=laps[idx]
+                                              )
+
+                    points.append(point)
+
         return points
 
 
-def extract_laps_data(packet: Dict, drivers, tags, influx: bool = False, kafka: bool = False):
+def extract_laps_data(packet: Dict, drivers, tags):
 
     points = []
     for idx, lap in enumerate(packet[list(packet.keys())[0]]):
@@ -262,20 +253,18 @@ def extract_laps_data(packet: Dict, drivers, tags, influx: bool = False, kafka: 
             if key == 'current_lap_num':
                 continue
             else:
-                if influx:
-                    try:
-                        points.append(Point('LapData').tag('circuit', tags['circuit'])
-                                  .tag('session_uid', tags['session_uid'])
-                                  .tag('session_type', tags['session_type'])
-                                  .tag('team', TEAMS[driver['team_id']])
-                                  .tag('lap', lap['current_lap_num'])
-                                  .tag('driver', driver_name)
-                                  .field(key, float(value))
-                        )
-                    except KeyError as exc:
-                        logger.error(f'Missing key "{exc}", while getting lap data.')
-                elif kafka:
-                    pass
+                try:
+                    points.append(Point('LapData').tag('circuit', tags['circuit'])
+                              .tag('session_uid', tags['session_uid'])
+                              .tag('session_type', tags['session_type'])
+                              .tag('team', TEAMS[driver['team_id']])
+                              .tag('lap', lap['current_lap_num'])
+                              .tag('driver', driver_name)
+                              .field(key, float(value))
+                    )
+                except KeyError as exc:
+                    logger.error(f'Missing key "{exc}", while getting lap data.')
+
     return points
 
 
