@@ -3,19 +3,15 @@ Connector for sending data to the time series database InfluxDB.
 
 See - https://www.influxdata.com/
 """
-from pathlib import Path
-from typing import List, Dict, NamedTuple
 
-from influxdb_client.client.write_api import SYNCHRONOUS, ASYNCHRONOUS
-from telemetry_f1_2021.packets import HEADER_FIELD_TO_PACKET_TYPE, PacketMotionData, \
-    PacketCarTelemetryData, PacketParticipantsData, PacketEventData, PacketSessionData, \
-    Packet
+from typing import List, Dict
+
+from influxdb_client.client.write_api import SYNCHRONOUS
 
 from honey_ryder.config import InfluxDBConfiguration
 from influxdb_client import InfluxDBClient
 import logging
 
-from honey_ryder.session.session import Race
 
 logging.basicConfig(
     level=logging.INFO,
