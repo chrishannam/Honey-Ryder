@@ -12,15 +12,12 @@ class InfluxDBProcessor(Processor):
 
         self.laps: CurrentLaps = laps
 
-    def convert_data(self, packet: Dict, packet_name: str) -> List[Point]:
-        return self.extract_car_array_data(packet=packet, packet_name=packet_name)
-
     def convert(self, data: Dict, packet_name: str):
 
         if packet_name in ['PacketCarSetupData', 'PacketMotionData',
                            'PacketCarDamageData', 'PacketCarTelemetryData',
                            'PacketCarStatusData']:
-            self.convert_data(data, packet_name)
+            return self.extract_car_array_data(packet=data, packet_name=packet_name)
 
     def create_point(self, packet_name: str, key: str, value: float, lap: int, driver: Driver, team: str,
                      tags: Dict = None) -> Point:

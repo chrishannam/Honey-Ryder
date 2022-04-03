@@ -172,7 +172,7 @@ DRIVERS = {
     58: 'Charles Leclerc',
     59: 'Pierre Gasly',
     62: 'Alexander Albon',
-    63: 'Nicholas Latifiv',
+    63: 'Nicholas Latifi',
     64: 'Dorian Boccolacci',
     65: 'Niko Kari',
     66: 'Roberto Merhi',

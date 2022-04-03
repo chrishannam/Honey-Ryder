@@ -118,7 +118,7 @@ class DataRecorder:
     #
     #     return point
 
-    def prepare_process(self, packet, packet_name) -> bool:
+    def prepare_for_processing(self, packet, packet_name) -> bool:
 
         header = packet.header
 
@@ -127,6 +127,11 @@ class DataRecorder:
         if not self.session and packet_name == 'PacketSessionData':
             self.session = self.process_session(packet_dict, header.session_uid)
             return False
+        elif packet_name == 'PacketSessionData':
+            if self.session.session_link_identifier != header.session_uid:
+                self.session = None
+                self.drivers = None
+                self.laps = None
 
         if not self.drivers and packet_name == 'PacketParticipantsData':
             self.drivers = self.process_drivers(packet_dict)
@@ -197,13 +202,13 @@ class DataRecorder:
             if packet_type.__name__ in BYPASS_PACKETS:
                 continue
 
-            self.prepare_process(packet, packet_name)
+            self.prepare_for_processing(packet, packet_name)
 
             if not self.session or not self.drivers or not self.laps:
                 continue
 
             if packet_name == 'PacketLapData':
-                self.process_laps(packet.to_dict())
+                self.laps = self.process_laps(packet.to_dict())
 
             if self.influxdb:
                 if not self.influxdb_processor:
@@ -213,150 +218,6 @@ class DataRecorder:
                         laps=self.laps,
                     )
                 converted = self.influxdb_processor.convert(packet.to_dict(), packet_name)
-                self.write_to_influxdb(converted)
 
-
-            # packet, packet_type = self.feed.get_latest()
-            #
-            # # packets to avoid for now
-            # if packet_type.__name__ in BYPASS_PACKETS:
-            #     continue
-            #
-            # # packet needs looping and writing to influxdb
-            # points = []
-            #
-            # header = packet.header
-            # packet_name = packet_type.__name__
-            # packet_dict = packet.to_dict()
-            #
-            # # updates laps
-            # influxdb_points = []
-            #
-            # del packet_dict['header']
-            #
-            # if not tags_filled:
-            #     if packet_name == 'PacketSessionData':
-            #         self.tags['circuit'] = TRACK_IDS[packet.track_id]
-            #         self.tags['session_uid'] = header.session_uid
-            #         self.tags['session_type'] = SESSION_TYPE[packet_dict['session_type']]
-            #         tags_filled = True
-            #     else:
-            #         continue
-            #
-            # if packet_name == 'PacketSessionData':
-            #     if self.influxdb:
-            #         influxdb_points = self.extract_session_data_influxdb(packet_dict)
-            #
-            # if not self.participants:
-            #     if packet_name != 'PacketParticipantsData':
-            #         continue
-            #     # map drivers to positions in the array of 20
-            #     self.participants = packet_dict['participants']
-            #     continue
-            #
-            # if packet_name == 'PacketLapData':
-            #     self.laps = packet_dict['lap_data']
-            #     laps = packet_dict['lap_data']
-            #
-            #     if self.influxdb:
-            #         influxdb_points = extract_laps_data(packet_dict, self.participants, self.tags)
-            #
-            # elif packet_name in ['PacketCarSetupData', 'PacketMotionData',
-            #                      'PacketCarDamageData', 'PacketCarTelemetryData',
-            #                      'PacketCarStatusData']:
-            #     if self.influxdb:
-            #         influxdb_points = self.extract_car_array_data(packet_dict, packet_name, laps)
-            #
-            # if self.influxdb and influxdb_points:
-            #     self.write_to_influxdb(points)
-            # if self.kafka:
-            #     topic = packet_name.replace('Packet', '')
-            #     topic = topic.replace('Data', '')
-            #     topic = topic.lower()
-            #     self.write_to_kafka(topic=topic, data=packet_dict)
-
-    def extract_car_array_data(self, packet: Dict, packet_name: str, laps):
-        points = []
-        packet_name = packet_name.replace('Packet', '').replace('Data', '').replace(
-            'Car', '')
-
-        for idx, setup in enumerate(packet[list(packet.keys())[0]]):
-            driver = self.participants[idx]
-
-            # check if this is the player
-            if driver['driver_id'] not in DRIVERS:
-                driver_name = driver['name']
-            else:
-                driver_name = DRIVERS[driver['driver_id']]
-
-            if not setup or not driver_name:
-                continue
-
-            for key, value in setup.items():
-                if isinstance(value, list):
-                    # The order is as follows[RL, RR, FL, FR]
-                    # we have four things, usually tyres
-                    for location, corner in enumerate(['rl', 'rr', 'fl', 'fr']):
-                        point = self.create_point(
-                            packet_name,
-                            key,
-                            float(value[location])
-                        )
-
-                        if corner.startswith('r'):
-                            point.tag('area_of_car', 'rear')
-                        else:
-                            point.tag('area_of_car', 'front')
-                        point.tag('corner_of_car', corner)
-                        point.tag('driver', driver_name)
-                        point.tag('team', driver_name)
-                        points.append(TEAMS[driver['team_id']])
-                else:
-                    if 'world_forward_dir_' in key or 'world_right_dir_' in key:
-                        value = float(value)
-
-                    point = self.create_point(packet_name, key, float(value),
-                                              team=TEAMS[driver['team_id']],
-                                              driver_name=driver_name,
-                                              lap=laps[idx]
-                                              )
-
-                    points.append(point)
-
-        return points
-
-
-def extract_laps_data(packet: Dict, drivers, tags):
-
-    points = []
-    for idx, lap in enumerate(packet[list(packet.keys())[0]]):
-        driver = drivers[idx]
-
-        # check if this is the player
-        if driver['driver_id'] not in DRIVERS:
-            driver_name = driver['name']
-        else:
-            driver_name = DRIVERS[driver['driver_id']]
-
-        if not lap or not driver_name:
-            continue
-
-        for key, value in lap.items():
-            if key == 'current_lap_num':
-                continue
-            else:
-                try:
-                    points.append(Point('LapData').tag('circuit', tags['circuit'])
-                              .tag('session_uid', tags['session_uid'])
-                              .tag('session_type', tags['session_type'])
-                              .tag('team', TEAMS[driver['team_id']])
-                              .tag('lap', lap['current_lap_num'])
-                              .tag('driver', driver_name)
-                              .field(key, float(value))
-                    )
-                except KeyError as exc:
-                    logger.error(f'Missing key "{exc}", while getting lap data.')
-
-    return points
-
-
+                if converted:
+                    self.write_to_influxdb(converted)
