@@ -1,4 +1,4 @@
-from honey_ryder.connectors.influxdb.formatters.packet_format import formatter, str
+from honey_ryder.connectors.influxdb.formatters.packet_format import formatter
 
 
 def test_telemetry_packet_formatting(telemetry_packet_json, race):
@@ -7,5 +7,3 @@ def test_telemetry_packet_formatting(telemetry_packet_json, race):
 
     assert result
 
-
-def

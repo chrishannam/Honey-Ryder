@@ -36,8 +36,7 @@ class TelemetryFeed:
 
         key = (header.packet_format, header.packet_version, header.packet_id)
 
-        return HEADER_FIELD_TO_PACKET_TYPE[key].unpack(packet), \
-               HEADER_FIELD_TO_PACKET_TYPE[key]
+        return HEADER_FIELD_TO_PACKET_TYPE[key].unpack(packet), HEADER_FIELD_TO_PACKET_TYPE[key]
 
     def player_car_index(self, header: PacketHeader = None):
         if not self._player_car_index and header:
