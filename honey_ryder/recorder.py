@@ -217,6 +217,7 @@ class DataRecorder:
                         session=self.session,
                         laps=self.laps,
                     )
+                self.influxdb_processor.update_laps(self.laps)
                 converted = self.influxdb_processor.convert(packet.to_dict(), packet_name)
 
                 if converted:

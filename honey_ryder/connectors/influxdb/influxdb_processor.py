@@ -9,7 +9,6 @@ class InfluxDBProcessor(Processor):
     def __init__(self, session: Session, drivers: Drivers, laps: CurrentLaps):
         self.session = session
         self.drivers = drivers
-
         self.laps: CurrentLaps = laps
 
     def convert(self, data: Dict, packet_name: str):
@@ -18,6 +17,9 @@ class InfluxDBProcessor(Processor):
                            'PacketCarDamageData', 'PacketCarTelemetryData',
                            'PacketCarStatusData']:
             return self.extract_car_array_data(packet=data, packet_name=packet_name)
+
+    def update_laps(self, laps: CurrentLaps):
+        self.laps = laps
 
     def create_point(self, packet_name: str, key: str, value: float, lap: int, driver: Driver, team: str,
                      tags: Dict = None) -> Point:
