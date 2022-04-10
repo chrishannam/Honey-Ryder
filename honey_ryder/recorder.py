@@ -97,7 +97,7 @@ class DataRecorder:
             self.laps = process_laps(packet_dict)
             return False
 
-        if packet_name == 'PacketLapData':
+        if packet_name == 'PacketSessionHistoryData':
             self.session_history = process_session_history(packet_dict)
 
         return True

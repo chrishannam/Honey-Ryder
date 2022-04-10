@@ -83,7 +83,7 @@ def telemetry_packet_json():
 
 
 @pytest.fixture
-def session_packet_json():
+def session_packet_dict():
     with open(PACKET_DATA_ROOT / 'session.json') as file:
         data = json.load(file)
 

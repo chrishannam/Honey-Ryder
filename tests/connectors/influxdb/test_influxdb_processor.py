@@ -13,3 +13,8 @@ def test_process_motion_packet(car_motion_dict: Dict, processor: InfluxDBProcess
 
     results = processor.extract_car_array_data(car_motion_dict, 'test_motion')
     assert len(results) == 375
+
+
+def test_process_session(session_packet_dict: Dict, processor: InfluxDBProcessor):
+    results = processor._process_session(session=session_packet_dict, packet_name='test_session')
+    assert len(results) == 526

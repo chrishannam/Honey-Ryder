@@ -6,10 +6,33 @@ from honey_ryder.telemetry.constants import TEAMS, DRIVERS, TRACK_IDS, SESSION_T
 
 
 class Processor(ABC):
+    def __init__(self, session: Session, drivers: Drivers, laps: CurrentLaps):
+        self.session = session
+        self.drivers = drivers
+        self.laps: CurrentLaps = laps
+        self.session_history = {}
+        self._leader = None
+        self._current_lap = None
 
     @abstractmethod
     def convert(self, data):
         pass
+
+    @property
+    def leader(self):
+        for driver_index, lap in enumerate(self.laps.laps):
+            if lap.car_position == 1:
+                self._leader = self.drivers[driver_index]
+                break
+        return self._leader
+
+    @property
+    def current_lap(self):
+        for driver_index, lap in enumerate(self.laps.laps):
+            if lap.car_position == 1:
+                self._current_lap = lap
+                break
+        return self._current_lap
 
 
 def process_participants(participants_packet_data):
