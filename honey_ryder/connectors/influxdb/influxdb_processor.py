@@ -10,6 +10,7 @@ class InfluxDBProcessor(Processor):
         self.session = session
         self.drivers = drivers
         self.laps: CurrentLaps = laps
+        self.session_history = {}
 
     def convert(self, data: Dict, packet_name: str):
 
@@ -17,6 +18,32 @@ class InfluxDBProcessor(Processor):
                            'PacketCarDamageData', 'PacketCarTelemetryData',
                            'PacketCarStatusData']:
             return self.extract_car_array_data(packet=data, packet_name=packet_name)
+        elif packet_name == 'PacketLapData':
+            return self._process_laps(laps=data, packet_name=packet_name)
+
+    def _process_laps(self, laps: Dict, packet_name: str):
+        points = []
+        for driver_index, lap in enumerate(laps['lap_data']):
+            if driver_index >= len(self.drivers.drivers):
+                continue
+
+            for name, value in lap.items():
+
+                if name == 'current_lap_num':
+                    pass
+                driver = self.drivers.drivers[driver_index]
+                lap_number: int = lap['current_lap_num']
+                points.append(
+                    self.create_point(
+                        packet_name=packet_name,
+                        key=name,
+                        value=value,
+                        lap=lap_number,
+                        driver=driver,
+                        team=driver.team_name
+                    )
+                )
+        return points
 
     def update_laps(self, laps: CurrentLaps):
         self.laps = laps
@@ -44,11 +71,27 @@ class InfluxDBProcessor(Processor):
         points = []
         data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
 
+        lap_number = self.laps.laps[packet['header']['player_car_index']].current_lap_num
+        driver = self.drivers.drivers[packet['header']['player_car_index']]
+
+        for name, value in packet.items():
+            if name in ['car_motion_data', 'header']:
+                continue
+            points.append(
+                self.create_point(
+                    packet_name=data_name,
+                    key=name,
+                    value=value,
+                    tags={'movement': 'motion'},
+                    lap=lap_number,
+                    driver=driver,
+                    team=driver.team_name
+                )
+            )
+
         for idx, data in enumerate(packet[list(packet.keys())[1]]):
             if idx >= len(self.drivers.drivers):
                 continue
-
-            lap_number = self.laps.laps[idx].current_lap_num
 
             for name, value in data.items():
                 driver = self.drivers.drivers[idx]

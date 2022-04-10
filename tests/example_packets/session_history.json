@@ -2,238 +2,28 @@
   "header": {
     "packet_format": 2021,
     "game_major_version": 1,
-    "game_minor_version": 12,
+    "game_minor_version": 18,
     "packet_version": 1,
     "packet_id": 11,
-    "session_uid": 12158528324812051775,
-    "session_time": 6.399,
-    "frame_identifier": 81,
+    "session_uid": 5527766251463209757,
+    "session_time": 106.771,
+    "frame_identifier": 3257,
     "player_car_index": 19,
     "secondary_player_car_index": 255
   },
-  "car_idx": 10,
-  "num_laps": 32,
-  "num_tyre_stints": 2,
-  "best_lap_time_lap_num": 27,
-  "best_sector1_lap_num": 6,
-  "best_sector2_lap_num": 20,
-  "best_sector3_lap_num": 28,
+  "car_idx": 14,
+  "num_laps": 2,
+  "num_tyre_stints": 1,
+  "best_lap_time_lap_num": 1,
+  "best_sector1_lap_num": 1,
+  "best_sector2_lap_num": 1,
+  "best_sector3_lap_num": 1,
   "lap_history_data": [
     {
-      "lap_time_in_ms": 89842,
-      "sector1_time_in_ms": 27489,
-      "sector2_time_in_ms": 33776,
-      "sector3_time_in_ms": 28576,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86867,
-      "sector1_time_in_ms": 24678,
-      "sector2_time_in_ms": 33693,
-      "sector3_time_in_ms": 28494,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86838,
-      "sector1_time_in_ms": 24586,
-      "sector2_time_in_ms": 33801,
-      "sector3_time_in_ms": 28451,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86576,
-      "sector1_time_in_ms": 24404,
-      "sector2_time_in_ms": 33676,
-      "sector3_time_in_ms": 28495,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86540,
-      "sector1_time_in_ms": 24418,
-      "sector2_time_in_ms": 33660,
-      "sector3_time_in_ms": 28460,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86558,
-      "sector1_time_in_ms": 24388,
-      "sector2_time_in_ms": 33637,
-      "sector3_time_in_ms": 28532,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86686,
-      "sector1_time_in_ms": 24479,
-      "sector2_time_in_ms": 33723,
-      "sector3_time_in_ms": 28483,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86578,
-      "sector1_time_in_ms": 24427,
-      "sector2_time_in_ms": 33693,
-      "sector3_time_in_ms": 28457,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 87584,
-      "sector1_time_in_ms": 25250,
-      "sector2_time_in_ms": 33971,
-      "sector3_time_in_ms": 28362,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86091,
-      "sector1_time_in_ms": 24509,
-      "sector2_time_in_ms": 33389,
-      "sector3_time_in_ms": 28192,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86651,
-      "sector1_time_in_ms": 24552,
-      "sector2_time_in_ms": 33667,
-      "sector3_time_in_ms": 28431,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86609,
-      "sector1_time_in_ms": 24539,
-      "sector2_time_in_ms": 33636,
-      "sector3_time_in_ms": 28432,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86166,
-      "sector1_time_in_ms": 24500,
-      "sector2_time_in_ms": 33344,
-      "sector3_time_in_ms": 28321,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86569,
-      "sector1_time_in_ms": 24598,
-      "sector2_time_in_ms": 33564,
-      "sector3_time_in_ms": 28407,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86385,
-      "sector1_time_in_ms": 24566,
-      "sector2_time_in_ms": 33427,
-      "sector3_time_in_ms": 28391,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86263,
-      "sector1_time_in_ms": 24545,
-      "sector2_time_in_ms": 33438,
-      "sector3_time_in_ms": 28279,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86642,
-      "sector1_time_in_ms": 24441,
-      "sector2_time_in_ms": 33573,
-      "sector3_time_in_ms": 28627,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 87423,
-      "sector1_time_in_ms": 24769,
-      "sector2_time_in_ms": 33855,
-      "sector3_time_in_ms": 28797,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 90494,
-      "sector1_time_in_ms": 24797,
-      "sector2_time_in_ms": 33922,
-      "sector3_time_in_ms": 31774,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 105679,
-      "sector1_time_in_ms": 45118,
-      "sector2_time_in_ms": 32725,
-      "sector3_time_in_ms": 27836,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85483,
-      "sector1_time_in_ms": 24545,
-      "sector2_time_in_ms": 33060,
-      "sector3_time_in_ms": 27876,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85445,
-      "sector1_time_in_ms": 24489,
-      "sector2_time_in_ms": 32988,
-      "sector3_time_in_ms": 27968,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85514,
-      "sector1_time_in_ms": 24766,
-      "sector2_time_in_ms": 32815,
-      "sector3_time_in_ms": 27932,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85350,
-      "sector1_time_in_ms": 24414,
-      "sector2_time_in_ms": 33020,
-      "sector3_time_in_ms": 27916,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86537,
-      "sector1_time_in_ms": 25352,
-      "sector2_time_in_ms": 33208,
-      "sector3_time_in_ms": 27976,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 86570,
-      "sector1_time_in_ms": 24984,
-      "sector2_time_in_ms": 33729,
-      "sector3_time_in_ms": 27856,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85074,
-      "sector1_time_in_ms": 24453,
-      "sector2_time_in_ms": 32860,
-      "sector3_time_in_ms": 27760,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85122,
-      "sector1_time_in_ms": 24460,
-      "sector2_time_in_ms": 33007,
-      "sector3_time_in_ms": 27654,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85240,
-      "sector1_time_in_ms": 24582,
-      "sector2_time_in_ms": 32909,
-      "sector3_time_in_ms": 27748,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85322,
-      "sector1_time_in_ms": 24564,
-      "sector2_time_in_ms": 32885,
-      "sector3_time_in_ms": 27872,
-      "lap_valid_bit_flags": 15
-    },
-    {
-      "lap_time_in_ms": 85185,
-      "sector1_time_in_ms": 24500,
-      "sector2_time_in_ms": 32919,
-      "sector3_time_in_ms": 27766,
+      "lap_time_in_ms": 98350,
+      "sector1_time_in_ms": 33370,
+      "sector2_time_in_ms": 41678,
+      "sector3_time_in_ms": 23301,
       "lap_valid_bit_flags": 15
     },
     {
@@ -242,6 +32,216 @@
       "sector2_time_in_ms": 0,
       "sector3_time_in_ms": 0,
       "lap_valid_bit_flags": 15
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
+    },
+    {
+      "lap_time_in_ms": 0,
+      "sector1_time_in_ms": 0,
+      "sector2_time_in_ms": 0,
+      "sector3_time_in_ms": 0,
+      "lap_valid_bit_flags": 0
     },
     {
       "lap_time_in_ms": 0,
@@ -722,14 +722,14 @@
   ],
   "tyre_stints_history_data": [
     {
-      "end_lap": 19,
-      "tyre_actual_compound": 18,
+      "end_lap": 255,
+      "tyre_actual_compound": 17,
       "tyre_visual_compound": 16
     },
     {
-      "end_lap": 255,
-      "tyre_actual_compound": 18,
-      "tyre_visual_compound": 16
+      "end_lap": 0,
+      "tyre_actual_compound": 0,
+      "tyre_visual_compound": 0
     },
     {
       "end_lap": 0,

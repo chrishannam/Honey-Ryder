@@ -3,7 +3,9 @@ import json
 import pytest
 from pathlib import Path
 from honey_ryder.config import InfluxDBConfiguration, RecorderConfiguration
+from honey_ryder.connectors.influxdb.influxdb_processor import InfluxDBProcessor
 from honey_ryder.recorder import DataRecorder
+from honey_ryder.session.session import Session, Drivers, CurrentLaps, Driver, Lap
 
 PACKET_DATA_ROOT = Path(__file__).parent / 'example_packets'
 
@@ -16,10 +18,12 @@ class DummyPacket:
         return self.data
 
 
-# @pytest.fixture
-# def race():
-#     return Race(circuit='test', session_link_identifier=123,
-#                 session_type='practice_test')
+@pytest.fixture
+def laps_dict():
+    with open(PACKET_DATA_ROOT / 'lap.json') as file:
+        data = json.load(file)
+
+    return data
 
 
 @pytest.fixture
@@ -27,7 +31,15 @@ def participants():
     with open(PACKET_DATA_ROOT / 'participants.json') as file:
         data = json.load(file)
 
-    return DummyPacket(data)
+    return data
+
+
+@pytest.fixture
+def car_motion_dict():
+    with open(PACKET_DATA_ROOT / 'motion.json') as file:
+        data = json.load(file)
+
+    return data
 
 
 @pytest.fixture
@@ -87,6 +99,14 @@ def participants_packet_data():
 
 
 @pytest.fixture
+def event_packet_data():
+    with open(PACKET_DATA_ROOT / 'event.json') as file:
+        data = json.load(file)
+
+    return data
+
+
+@pytest.fixture
 def data_recorder():
     return DataRecorder(RecorderConfiguration())
 
@@ -99,3 +119,52 @@ def influxdb_config():
         org='org',
         bucket='la_bucket'
     )
+
+
+@pytest.fixture
+def session():
+    return Session(
+        circuit='test_circuit',
+        session_type='test_session_type',
+        session_link_identifier=1234
+    )
+
+
+@pytest.fixture
+def drivers():
+    drivers = []
+    for i in enumerate(range(1, 21)):
+        drivers.append(
+            Driver(
+                ai_controlled=0,
+                driver_name=f'driver_name_{i}',
+                network_id=0,
+                team_name=f'team_name_{i}',
+                my_team=0,
+                race_number=0,
+                nationality=f'nationality_{i}',
+                name=f'driver_name_{i}',
+                your_telemetry=0,
+            )
+        )
+
+    return Drivers(
+        drivers=drivers,
+        num_active_cars=20
+    )
+
+
+@pytest.fixture
+def laps(laps_dict):
+    laps = []
+    for lap in laps_dict['lap_data']:
+        laps.append(Lap(**lap))
+
+    return CurrentLaps(
+        laps=laps
+    )
+
+
+@pytest.fixture
+def processor(session, drivers, laps):
+    return InfluxDBProcessor(session=session, drivers=drivers, laps=laps)

@@ -10,6 +10,8 @@ from honey_ryder.connectors.influxdb.influxdb_connection import InfluxDBConnecto
 from honey_ryder.connectors.influxdb.influxdb_processor import InfluxDBProcessor
 from honey_ryder.connectors.kafka.kafka_connection import KafkaConnector
 from honey_ryder.constants import TAGS, BYPASS_PACKETS
+from honey_ryder.packet_processing.processor import process_laps, process_session_history, process_drivers, \
+    process_session
 from honey_ryder.session.session import Session, Drivers, Driver, CurrentLaps, Lap
 from honey_ryder.telemetry.constants import SESSION_TYPE, TRACK_IDS, DRIVERS, TEAMS
 from honey_ryder.telemetry.listener import TelemetryFeed
@@ -32,6 +34,7 @@ class DataRecorder:
     drivers: Union[Drivers, None] = None
     laps: Union[CurrentLaps, None] = None
     influxdb_processor: Union[InfluxDBProcessor, None] = None
+    session_history = {}
 
     def __init__(self, configuration: RecorderConfiguration, port: int = 20777) -> None:
         self.configuration: RecorderConfiguration = configuration
@@ -71,53 +74,6 @@ class DataRecorder:
         self.kafka.send(topic, data)
         return True
 
-    # def extract_session_data_influxdb(self, packet: Dict) -> List[Point]:
-    #     """
-    #     Not all the session data packet is needed, just extract the important stuff.
-    #     INFO_DATA_STRING = '{packet_type},' \
-    #                'circuit={circuit},lap={lap},' \
-    #                'session_uid={session_link_identifier},' \
-    #                'session_type={session_type},' \
-    #                'team={team},' \
-    #                'driver={driver}' \
-    #                ' {metric_name}={metric_value}'
-    #     """
-    #     points = []
-    #     for key, value in packet.items():
-    #
-    #         if key == 'marshal_zones':
-    #             for counter, zone in enumerate(value):
-    #                 points.append(self.create_point('Session', counter,
-    #                                                 zone['zone_flag']))
-    #
-    #         elif key == 'weather_forecast_samples':
-    #             for reading in value:
-    #                 for k, v in reading.items():
-    #                     points.append(self.create_point('Session', k, v))
-    #
-    #         else:
-    #             points.append(self.create_point('Session', key, value))
-    #
-    #     return points
-    #
-    # def create_point(self, packet_name, key, value, driver_name=None, team=None,
-    #                  lap=None):
-    #     point = Point(packet_name).tag('circuit', self.tags['circuit']) \
-    #         .tag('session_uid', self.tags['session_uid']) \
-    #         .tag('session_type', self.tags['session_type']) \
-    #         .field(key, value)
-    #
-    #     if team:
-    #         point.tag('team', team)
-    #
-    #     if lap:
-    #         point.tag('lap', lap)
-    #
-    #     if driver_name:
-    #         point.tag('driver', driver_name)
-    #
-    #     return point
-
     def prepare_for_processing(self, packet, packet_name) -> bool:
 
         header = packet.header
@@ -125,7 +81,7 @@ class DataRecorder:
         packet_dict = packet.to_dict()
 
         if not self.session and packet_name == 'PacketSessionData':
-            self.session = self.process_session(packet_dict, header.session_uid)
+            self.session = process_session(packet_dict, header.session_uid)
             return False
         elif packet_name == 'PacketSessionData':
             if self.session.session_link_identifier != header.session_uid:
@@ -134,64 +90,17 @@ class DataRecorder:
                 self.laps = None
 
         if not self.drivers and packet_name == 'PacketParticipantsData':
-            self.drivers = self.process_drivers(packet_dict)
+            self.drivers = process_drivers(packet_dict)
             return False
 
         if not self.laps and packet_name == 'PacketLapData':
-            self.laps = self.process_laps(packet_dict)
+            self.laps = process_laps(packet_dict)
             return False
 
+        if packet_name == 'PacketLapData':
+            self.session_history = process_session_history(packet_dict)
+
         return True
-
-    def process_laps(self, data: Dict) -> CurrentLaps:
-        laps = []
-
-        for lap in data['lap_data']:
-            lap = Lap(**lap)
-            laps.append(lap)
-
-        return CurrentLaps(laps=laps)
-
-    def process_session(self, data: Dict, session_link_identifier: int) -> Session:
-        circuit = TRACK_IDS[data['track_id']]
-        session_type = SESSION_TYPE[data['session_type']]
-        return Session(
-            circuit=circuit,
-            session_type=session_type,
-            session_link_identifier=session_link_identifier
-        )
-
-    def process_drivers(self, data: Dict) -> Drivers:
-        drivers: List[Driver] = []
-
-        for raw_driver in data['participants']:
-            if raw_driver['team_id'] != 255:
-
-                # handle custom driver
-                if raw_driver['driver_id'] in DRIVERS:
-                    driver_name = DRIVERS[raw_driver['driver_id']]
-                else:
-                    driver_name = raw_driver['name']
-
-                if raw_driver['team_id'] in TEAMS:
-                    team = TEAMS[raw_driver['team_id']]
-                else:
-                    team = 'unknown'
-
-                driver = Driver(
-                    ai_controlled=raw_driver['ai_controlled'],
-                    driver_name=driver_name,
-                    network_id=raw_driver['network_id'],
-                    team_name=team,
-                    my_team=raw_driver['my_team'],
-                    race_number=raw_driver['race_number'],
-                    nationality=raw_driver['nationality'],
-                    name=raw_driver['name'],
-                    your_telemetry=raw_driver['your_telemetry']
-                )
-                drivers.append(driver)
-
-        return Drivers(drivers=drivers, num_active_cars=data['num_active_cars'])
 
     def collect(self):
 
@@ -208,7 +117,7 @@ class DataRecorder:
                 continue
 
             if packet_name == 'PacketLapData':
-                self.laps = self.process_laps(packet.to_dict())
+                self.laps = process_laps(packet.to_dict())
 
             if self.influxdb:
                 if not self.influxdb_processor:
