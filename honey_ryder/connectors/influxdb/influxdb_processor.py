@@ -32,21 +32,24 @@ class InfluxDBProcessor(Processor):
                         packet_name=data_name,
                         key=name,
                         value=value,
-                        lap=self.current_lap
+                        lap=self.current_lap.current_lap_num
                     )
                 )
             elif isinstance(value, list):
-                for i in value:
-                    if isinstance(i, dict):
-                        for k, v in i.items():
-                            points.append(
-                                self.create_point(
-                                    packet_name=data_name,
-                                    key=k,
-                                    value=v,
-                                    lap=self.current_lap
+                if name == 'weather_forecast_samples':
+                    continue
+                else:
+                    for i in value:
+                        if isinstance(i, dict):
+                            for k, v in i.items():
+                                points.append(
+                                    self.create_point(
+                                        packet_name=data_name,
+                                        key=k,
+                                        value=v,
+                                        lap=self.current_lap.current_lap_num
+                                    )
                                 )
-                            )
         return points
 
     def _process_laps(self, laps: Dict, packet_name: str):
