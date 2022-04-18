@@ -25,7 +25,13 @@ def main():
 from(bucket: "f1")
   |> range(start: -10m)
   |> filter(fn: (r) => r["_measurement"] == "Session")
-  |> filter(fn: (r) => r["_field"] == "pit_stop_window_ideal_lap" or r["_field"] == "pit_stop_window_latest_lap" or r["_field"] == "pit_stop_rejoin_position" or r["_field"] == "air_temperature" or r["_field"] == "air_temperature_change" or r["_field"] == "track_temperature" or r["_field"] == "track_temperature_change")
+  |> filter(fn: (r) => r["_field"] == "pit_stop_window_ideal_lap" 
+  or r["_field"] == "pit_stop_window_latest_lap" 
+  or r["_field"] == "pit_stop_rejoin_position" 
+  or r["_field"] == "air_temperature" 
+  or r["_field"] == "air_temperature_change" 
+  or r["_field"] == "track_temperature" 
+  or r["_field"] == "track_temperature_change")
   |> aggregateWindow(every: 500ms, fn: mean, createEmpty: false)
   |> yield(name: "mean")
   """

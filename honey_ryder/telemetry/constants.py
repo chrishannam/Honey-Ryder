@@ -78,7 +78,8 @@ SESSION_TYPE = {
     9: 'osq',
     10: 'race',
     11: 'race_2',
-    12: 'time_trial',
+    12: 'race_3',
+    13: 'time_trial',
 }
 
 TRACK_IDS = {

@@ -19,6 +19,47 @@ class InfluxDBProcessor(Processor):
             return self._process_laps(laps=data, packet_name=packet_name)
         elif packet_name == 'PacketSessionData':
             return self._process_session(session=data, packet_name=packet_name)
+        elif packet_name == 'PacketSessionHistoryData':
+            return self._process_session_history(session=data, packet_name=packet_name)
+
+    def _process_session_history(self, session: Dict, packet_name: str):
+        driver = self.drivers.drivers[session['cat_idx']]
+        points = []
+        data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
+        for name, value in session.items():
+            if name == 'header':
+                continue
+            if isinstance(value, float) or isinstance(value, int):
+                points.append(
+                    self.create_point(
+                        packet_name=data_name,
+                        key=name,
+                        value=value,
+                        lap=self.current_lap.current_lap_num,
+                        driver=driver,
+                        team=driver.team_name
+                    )
+                )
+            elif isinstance(value, list):
+                for index, lap_data in enumerate(value):
+                    if lap_data['lap_time_in_ms'] != 0 :
+                        for k, v in lap_data:
+                            # 0x01 bit set-lap valid,
+                            # 0x02 bit set-sector 1 valid
+                            # 0x04 bit set-sector 2 valid
+                            # 0x08 bit set-sector 3 valid
+
+                            points.append(
+                                self.create_point(
+                                    packet_name=data_name,
+                                    key=k,
+                                    value=v,
+                                    lap=self.current_lap.current_lap_num,
+                                    driver=driver,
+                                    team=driver.team_name
+                                )
+                            )
+        return None
 
     def _process_session(self, session: Dict, packet_name: str):
         points = []
