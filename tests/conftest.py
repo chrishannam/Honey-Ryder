@@ -91,6 +91,14 @@ def session_packet_dict():
 
 
 @pytest.fixture
+def session_history_packet_dict():
+    with open(PACKET_DATA_ROOT / 'session_history.json') as file:
+        data = json.load(file)
+
+    return data
+
+
+@pytest.fixture
 def participants_packet_data():
     with open(PACKET_DATA_ROOT / 'participants.json') as file:
         data = json.load(file)
@@ -133,7 +141,7 @@ def session():
 @pytest.fixture
 def drivers():
     drivers = []
-    for i in enumerate(range(1, 21)):
+    for i in range(1, 21):
         drivers.append(
             Driver(
                 ai_controlled=0,
