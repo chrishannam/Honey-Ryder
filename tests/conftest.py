@@ -3,7 +3,7 @@ import json
 import pytest
 from pathlib import Path
 from honey_ryder.config import InfluxDBConfiguration, RecorderConfiguration
-from honey_ryder.connectors.influxdb.influxdb_processor import InfluxDBProcessor
+from connectors.egress.influxdb.influxdb_processor import InfluxDBProcessor
 from honey_ryder.recorder import DataRecorder
 from honey_ryder.session.session import Session, Drivers, CurrentLaps, Driver, Lap
 

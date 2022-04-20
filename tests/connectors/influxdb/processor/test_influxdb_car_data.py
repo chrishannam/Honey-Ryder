@@ -1,7 +1,7 @@
 from typing import Dict
 from pytest import fixture
 
-from honey_ryder.connectors.influxdb.influxdb_processor import InfluxDBProcessor
+from connectors.egress.influxdb.influxdb_processor import InfluxDBProcessor
 from honey_ryder.session.session import Session, Lap, Drivers, Driver
 from honey_ryder.telemetry.constants import DRIVERS, TEAMS
 

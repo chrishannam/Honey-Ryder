@@ -1,10 +1,9 @@
-from numbers import Number
 
 from influxdb_client import Point
-from typing import Dict, List
+from typing import Dict
 
-from honey_ryder.packet_processing.processor import Processor
-from honey_ryder.session.session import Session, Lap, Drivers, Driver, CurrentLaps
+from honey_ryder.modelling.processor import Processor
+from honey_ryder.session.session import Driver, CurrentLaps
 
 
 class InfluxDBProcessor(Processor):
@@ -26,6 +25,7 @@ class InfluxDBProcessor(Processor):
         driver = self.drivers.drivers[session['car_idx']]
         points = []
         data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
+
         for name, value in session.items():
             if name in ['header', 'car_idx', 'num_laps']:
                 continue
