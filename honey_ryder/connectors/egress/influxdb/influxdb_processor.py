@@ -9,22 +9,22 @@ from honey_ryder.session.session import Driver, CurrentLaps
 class InfluxDBProcessor(Processor):
 
     def convert(self, data: Dict, packet_name: str):
+        data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
 
         if packet_name in ['PacketCarSetupData', 'PacketMotionData',
                            'PacketCarDamageData', 'PacketCarTelemetryData',
                            'PacketCarStatusData']:
-            return self.extract_car_array_data(packet=data, packet_name=packet_name)
+            return self.extract_car_array_data(packet=data, packet_name=data_name)
         elif packet_name == 'PacketLapData':
-            return self._process_laps(laps=data, packet_name=packet_name)
+            return self._process_laps(laps=data, packet_name=data_name)
         elif packet_name == 'PacketSessionData':
-            return self._process_session(session=data, packet_name=packet_name)
+            return self._process_session(session=data, packet_name=data_name)
         elif packet_name == 'PacketSessionHistoryData':
-            return self._process_session_history(session=data, packet_name=packet_name)
+            return self._process_session_history(session=data, packet_name=data_name)
 
-    def _process_session_history(self, session: Dict, packet_name: str):
+    def _process_session_history(self, session: Dict, data_name: str):
         driver = self.drivers.drivers[session['car_idx']]
         points = []
-        data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
 
         for name, value in session.items():
             if name in ['header', 'car_idx', 'num_laps']:
@@ -77,9 +77,8 @@ class InfluxDBProcessor(Processor):
                             )
         return points
 
-    def _process_session(self, session: Dict, packet_name: str):
+    def _process_session(self, session: Dict, data_name: str):
         points = []
-        data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
         for name, value in session.items():
             if name == 'header':
                 continue
@@ -109,9 +108,8 @@ class InfluxDBProcessor(Processor):
                                 )
         return points
 
-    def _process_laps(self, laps: Dict, packet_name: str):
+    def _process_laps(self, laps: Dict, data_name: str):
         points = []
-        data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
         for driver_index, lap in enumerate(laps['lap_data']):
             if driver_index >= len(self.drivers.drivers):
                 continue
@@ -159,9 +157,8 @@ class InfluxDBProcessor(Processor):
 
         return point
 
-    def extract_car_array_data(self, packet: Dict, packet_name: str):
+    def extract_car_array_data(self, packet: Dict, data_name: str):
         points = []
-        data_name = packet_name.replace('Packet', '').replace('Data', '').replace('Car', '')
 
         lap_number = self.laps.laps[packet['header']['player_car_index']].current_lap_num
         driver = self.drivers.drivers[packet['header']['player_car_index']]
