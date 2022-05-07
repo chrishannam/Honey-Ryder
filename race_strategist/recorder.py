@@ -1,14 +1,14 @@
 import logging
 from typing import List, Union
 
-from honey_ryder.config import RecorderConfiguration
-from honey_ryder.connectors.egress.influxdb.influxdb_connection import InfluxDBConnector
+from race_strategist.config import RecorderConfiguration
+from race_strategist.connectors.egress.influxdb.influxdb_connection import InfluxDBConnector
 from connectors.egress.influxdb.processor import InfluxDBProcessor
 from connectors.egress.kafka.kafka_connection import KafkaConnector
-from honey_ryder.modelling.processor import process_laps, process_session_history, process_drivers, \
+from race_strategist.modelling.processor import process_laps, process_session_history, process_drivers, \
     process_session
-from honey_ryder.session.session import Session, Drivers, CurrentLaps
-from honey_ryder.telemetry.listener import TelemetryFeed
+from race_strategist.session.session import Session, Drivers, CurrentLaps
+from race_strategist.telemetry.listener import TelemetryFeed
 
 
 logging.basicConfig(

@@ -6,7 +6,7 @@ from typing import Dict
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable
 
-from honey_ryder.config import KafkaConfiguration
+from race_strategist.config import KafkaConfiguration
 from modelling.processor import Processor
 
 logging.basicConfig(

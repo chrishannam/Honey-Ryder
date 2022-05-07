@@ -1,6 +1,6 @@
 import pytest
 
-from honey_ryder.config import (
+from race_strategist.config import (
     load_config,
     RecorderConfiguration,
     KafkaConfiguration,

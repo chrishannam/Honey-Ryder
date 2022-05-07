@@ -18,7 +18,7 @@ import os.path
 import time
 
 # usual linux ports
-# from honey_ryder.connectors.influxdb import InfluxDBConnector
+# from race_strategist.connectors.influxdb import InfluxDBConnector
 #
 # PORTS = ["ttyUSB0", "ttyUSB1", "ttyAMA0", "ttyACM0"]
 # SERIAL_PORT_PATH_ROOT = "/dev/"
@@ -89,7 +89,7 @@ import time
 #
 # if __name__ == "__main__":
 #     print("starting!")
-#     # influx_conn = InfluxDBConnector('/Users/channam/.config/honey_ryder/config.ini')
+#     # influx_conn = InfluxDBConnector('/Users/channam/.config/race_strategist/config.ini')
 #     while True:
 #         sensor_reader = SerialSensor(port=_detect_port())
 #         reading = sensor_reader.read()

@@ -1,13 +1,13 @@
 import setuptools
 
-import honey_ryder
+import race_strategist
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="honey_ryder",
-    version=honey_ryder.__version__,
+    name="race_strategist",
+    version=race_strategist.__version__,
     author="Chris Hannam",
     author_email="ch@chrishannam.co.uk",
     description="Display telemetry data and spot anomalies.",
@@ -30,7 +30,7 @@ setuptools.setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "honey_ryder-recorder=honey_ryder.main:run",
+            "race_strategist-recorder=race_strategist.main:run",
         ]
     },
 )

@@ -5,7 +5,7 @@ Currently supports:
     * Kafka
     * InfluxDB
 
-By default the config should be located in ~/.config/honey_ryder/config.ini
+By default the config should be located in ~/.config/race_strategist/config.ini
 
 Example file:
 [influxdb]
@@ -34,7 +34,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 HOME: Path = Path.home()
-CONFIG_FILE_NAME: str = 'honey_ryder.ini'
+CONFIG_FILE_NAME: str = 'race_strategist.ini'
 
 
 @dataclass

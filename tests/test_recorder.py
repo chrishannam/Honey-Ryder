@@ -1,5 +1,5 @@
-from honey_ryder.constants import TAGS
-from honey_ryder.recorder import extract_car_data
+from race_strategist.constants import TAGS
+from race_strategist.recorder import extract_car_data
 
 
 def test_extract_car_data(telemetry_packet_json, participants):

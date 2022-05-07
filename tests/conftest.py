@@ -2,10 +2,10 @@ import json
 
 import pytest
 from pathlib import Path
-from honey_ryder.config import InfluxDBConfiguration, RecorderConfiguration
+from race_strategist.config import InfluxDBConfiguration, RecorderConfiguration
 from connectors.egress.influxdb.processor import InfluxDBProcessor
-from honey_ryder.recorder import DataRecorder
-from honey_ryder.session.session import Session, Drivers, CurrentLaps, Driver, Lap
+from race_strategist.recorder import DataRecorder
+from race_strategist.session.session import Session, Drivers, CurrentLaps, Driver, Lap
 
 PACKET_DATA_ROOT = Path(__file__).parent / 'example_packets'
 

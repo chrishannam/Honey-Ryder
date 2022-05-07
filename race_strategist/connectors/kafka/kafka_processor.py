@@ -1,4 +1,4 @@
-from honey_ryder.packet_processing.processor import Processor
+from race_strategist.packet_processing.processor import Processor
 from typing import Dict
 
 

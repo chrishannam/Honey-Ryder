@@ -8,7 +8,7 @@ from typing import List, Dict
 
 from influxdb_client.client.write_api import SYNCHRONOUS
 
-from honey_ryder.config import InfluxDBConfiguration
+from race_strategist.config import InfluxDBConfiguration
 from influxdb_client import InfluxDBClient
 import logging
 

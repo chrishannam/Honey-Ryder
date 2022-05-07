@@ -4,7 +4,7 @@ from telemetry_f1_2021.packets import Packet, \
     HEADER_FIELD_TO_PACKET_TYPE, PacketEventData, PacketSessionData, \
     PacketParticipantsData
 
-from honey_ryder.session.session import Race
+from race_strategist.session.session import Race
 
 INFO_DATA_STRING = '{packet_type},' \
                    'circuit={circuit},lap={lap},' \

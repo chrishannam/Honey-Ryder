@@ -2,8 +2,8 @@ from typing import Dict
 from pytest import fixture
 
 from connectors.egress.influxdb.processor import InfluxDBProcessor
-from honey_ryder.session.session import Session, Lap, Drivers, Driver
-from honey_ryder.telemetry.constants import DRIVERS, TEAMS
+from race_strategist.session.session import Session, Lap, Drivers, Driver
+from race_strategist.telemetry.constants import DRIVERS, TEAMS
 
 
 @fixture

@@ -1,7 +1,7 @@
 import click
 
-from honey_ryder.config import load_config
-from honey_ryder.recorder import DataRecorder
+from race_strategist.config import load_config
+from race_strategist.recorder import DataRecorder
 
 
 @click.command()

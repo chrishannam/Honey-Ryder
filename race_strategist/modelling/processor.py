@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List
 
-from honey_ryder.session.session import Drivers, Driver, CurrentLaps, Lap, Session
-from honey_ryder.telemetry.constants import TEAMS, DRIVERS, TRACK_IDS, SESSION_TYPE
+from race_strategist.session.session import Drivers, Driver, CurrentLaps, Lap, Session
+from race_strategist.constants import TEAMS, DRIVERS, TRACK_IDS, SESSION_TYPE
 
 
 class Processor(ABC):

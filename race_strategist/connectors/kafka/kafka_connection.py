@@ -5,7 +5,7 @@ from typing import Dict, List
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable
 
-from honey_ryder.config import KafkaConfiguration
+from race_strategist.config import KafkaConfiguration
 
 logging.basicConfig(
     level=logging.INFO,
