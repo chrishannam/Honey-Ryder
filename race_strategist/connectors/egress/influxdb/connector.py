@@ -1,33 +1,26 @@
-"""
-Connector for sending data to the time series database InfluxDB.
+from influxdb_client import Point, InfluxDBClient
+from typing import Dict, List
 
-See - https://www.influxdata.com/
-"""
-
-from typing import List, Dict
-
-from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client.client.write_api import ASYNCHRONOUS
 
 from race_strategist.config import InfluxDBConfiguration
-from influxdb_client import InfluxDBClient
-import logging
-
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s.%(msecs)03d %(levelname)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
-
-logger = logging.getLogger(__name__)
+from race_strategist.connectors.egress.influxdb.processor import InfluxDBProcessor
 
 
 class InfluxDBConnector:
+    _processor: InfluxDBProcessor
+
     def __init__(self, configuration: InfluxDBConfiguration) -> None:
 
         self.config = configuration
         self._connection = None
         self._write_api = None
+
+    @property
+    def processor(self) -> InfluxDBProcessor:
+        if not self._processor:
+            self._processor = InfluxDBProcessor()
+        return self._processor
 
     @property
     def connection(self) -> InfluxDBClient:
@@ -40,7 +33,7 @@ class InfluxDBConnector:
     @property
     def write_api(self):
         if not self._write_api:
-            self._write_api = self.connection.write_api(write_options=SYNCHRONOUS)
+            self._write_api = self.connection.write_api(write_options=ASYNCHRONOUS)
         return self._write_api
 
     def record_pulse(self, reading: Dict):

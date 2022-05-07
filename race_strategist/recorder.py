@@ -2,9 +2,9 @@ import logging
 from typing import List, Union
 
 from race_strategist.config import RecorderConfiguration
-from race_strategist.connectors.egress.influxdb.influxdb_connection import InfluxDBConnector
+from race_strategist.connectors.egress.influxdb.processor import InfluxDBConnector
 from connectors.egress.influxdb.processor import InfluxDBProcessor
-from connectors.egress.kafka.kafka_connection import KafkaConnector
+from connectors.egress.kafka.c import KafkaConnector
 from race_strategist.modelling.processor import process_laps, process_session_history, process_drivers, \
     process_session
 from race_strategist.session.session import Session, Drivers, CurrentLaps
@@ -30,11 +30,16 @@ class DataRecorder:
     influxdb_processor: Union[InfluxDBProcessor, None] = None
     session_history = {}
 
-    def __init__(self, configuration: RecorderConfiguration, port: int = 20777) -> None:
+    def __init__(self, configuration: RecorderConfiguration, port: int = 20777, all_drivers=True) -> None:
         self.configuration: RecorderConfiguration = configuration
         self.feed = TelemetryFeed(port=port)
         self.port = port
         self.participants = None
+        self._all_drivers = all_drivers
+
+    @property
+    def all_drivers(self):
+        return self._all_drivers
 
     @property
     def kafka(self):

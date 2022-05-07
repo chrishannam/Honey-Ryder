@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Dict, List
+from typing import Dict
 
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable

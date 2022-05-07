@@ -13,8 +13,8 @@ setuptools.setup(
     description="Display telemetry data and spot anomalies.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/chrishannam/f1-2021",
-    packages=setuptools.find_packages(exclude=("tests", "examples", "data")),
+    url="https://github.com/chrishannam/f1-2021-race-strategist",
+    packages=setuptools.find_packages(exclude="tests"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
@@ -23,6 +23,8 @@ setuptools.setup(
         "click",
         "fastavro",
         "influxdb-client",
+        "flask",
+        "marshmallow",
         "kafka-python",
         "pyserial",
         "Telemetry-F1-2021",
@@ -30,7 +32,7 @@ setuptools.setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "race_strategist-recorder=race_strategist.main:run",
+            "race-strategist-logger=race_strategist.main:run",
         ]
     },
 )
