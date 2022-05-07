@@ -1,6 +1,6 @@
 from typing import Dict
 
-from honey_ryder.connectors.influxdb.influxdb_processor import InfluxDBProcessor
+from connectors.egress.influxdb.processor import InfluxDBProcessor
 
 
 def test_process_event_packet(laps_dict: Dict, processor: InfluxDBProcessor):

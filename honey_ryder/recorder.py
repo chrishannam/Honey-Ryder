@@ -1,19 +1,13 @@
 import logging
-from typing import List, Union, Dict
-
-from influxdb_client import Point
-from telemetry_f1_2021.cleaned_packets import PacketLapData
+from typing import List, Union
 
 from honey_ryder.config import RecorderConfiguration
-# from honey_ryder.connectors.heart_beat_monitor import SerialSensor, _detect_port
-from honey_ryder.connectors.influxdb.influxdb_connection import InfluxDBConnector
-from honey_ryder.connectors.influxdb.influxdb_processor import InfluxDBProcessor
-from honey_ryder.connectors.kafka.kafka_connection import KafkaConnector
-from honey_ryder.constants import TAGS, BYPASS_PACKETS
-from honey_ryder.packet_processing.processor import process_laps, process_session_history, process_drivers, \
+from honey_ryder.connectors.egress.influxdb.influxdb_connection import InfluxDBConnector
+from connectors.egress.influxdb.processor import InfluxDBProcessor
+from connectors.egress.kafka.kafka_connection import KafkaConnector
+from honey_ryder.modelling.processor import process_laps, process_session_history, process_drivers, \
     process_session
-from honey_ryder.session.session import Session, Drivers, Driver, CurrentLaps, Lap
-from honey_ryder.telemetry.constants import SESSION_TYPE, TRACK_IDS, DRIVERS, TEAMS
+from honey_ryder.session.session import Session, Drivers, CurrentLaps
 from honey_ryder.telemetry.listener import TelemetryFeed
 
 
@@ -41,7 +35,6 @@ class DataRecorder:
         self.feed = TelemetryFeed(port=port)
         self.port = port
         self.participants = None
-        self.tags = TAGS
 
     @property
     def kafka(self):
@@ -107,9 +100,6 @@ class DataRecorder:
         while True:
             packet, packet_type = self.feed.get_latest()
             packet_name = packet_type.__name__
-
-            if packet_type.__name__ in BYPASS_PACKETS:
-                continue
 
             self.prepare_for_processing(packet, packet_name)
 
