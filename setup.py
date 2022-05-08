@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="race_strategist",
+    name="f1_2021_race_strategist",
     version=race_strategist.__version__,
     author="Chris Hannam",
     author_email="ch@chrishannam.co.uk",
