@@ -2,9 +2,9 @@ import logging
 from typing import List, Union
 
 from race_strategist.config import RecorderConfiguration
-from race_strategist.connectors.egress.influxdb.processor import InfluxDBConnector
-from connectors.egress.influxdb.processor import InfluxDBProcessor
-from connectors.egress.kafka.c import KafkaConnector
+from race_strategist.connectors.influxdb.connector import InfluxDBConnector
+from race_strategist.connectors.influxdb.processor import InfluxDBProcessor
+from race_strategist.connectors.kafka.connector import KafkaConnector
 from race_strategist.modelling.processor import process_laps, process_session_history, process_drivers, \
     process_session
 from race_strategist.session.session import Session, Drivers, CurrentLaps

@@ -3,7 +3,7 @@ import json
 import pytest
 from pathlib import Path
 from race_strategist.config import InfluxDBConfiguration, RecorderConfiguration
-from connectors.egress.influxdb.processor import InfluxDBProcessor
+from connectors.influxdb import InfluxDBProcessor
 from race_strategist.recorder import DataRecorder
 from race_strategist.session.session import Session, Drivers, CurrentLaps, Driver, Lap
 

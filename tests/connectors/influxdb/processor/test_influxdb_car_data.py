@@ -1,7 +1,7 @@
 from typing import Dict
 from pytest import fixture
 
-from connectors.egress.influxdb.processor import InfluxDBProcessor
+from connectors.influxdb import InfluxDBProcessor
 from race_strategist.session.session import Session, Lap, Drivers, Driver
 from race_strategist.telemetry.constants import DRIVERS, TEAMS
 

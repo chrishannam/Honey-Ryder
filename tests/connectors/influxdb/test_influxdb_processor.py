@@ -1,6 +1,6 @@
 from typing import Dict
 
-from connectors.egress.influxdb.processor import InfluxDBProcessor
+from connectors.influxdb import InfluxDBProcessor
 
 
 def test_process_event_packet(laps_dict: Dict, processor: InfluxDBProcessor):

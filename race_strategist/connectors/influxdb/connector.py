@@ -1,10 +1,10 @@
-from influxdb_client import Point, InfluxDBClient
+from influxdb_client import InfluxDBClient
 from typing import Dict, List
 
 from influxdb_client.client.write_api import ASYNCHRONOUS
 
 from race_strategist.config import InfluxDBConfiguration
-from race_strategist.connectors.egress.influxdb.processor import InfluxDBProcessor
+from race_strategist.connectors.influxdb.processor import InfluxDBProcessor
 
 
 class InfluxDBConnector:

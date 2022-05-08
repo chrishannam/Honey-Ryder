@@ -66,7 +66,7 @@ def load_config(
     if config_file.is_file():
         config.read(filename)
     else:
-        logger.warn('Unable to find config file.')
+        logger.warning('Unable to find config file.')
         return recorder_config
 
     for section in config.keys():
